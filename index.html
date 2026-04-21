@@ -40,7 +40,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 @keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* Sticky header */
-.sticky-header{position:sticky;top:0;z-index:50;background:var(--bw-orange);border-bottom:1px solid rgba(0,0,0,.08);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sticky-header{position:sticky;top:0;z-index:50;background:var(--bw);border-bottom:1px solid rgba(0,0,0,.08);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .sticky-left{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
 .sticky-logo{height:18px;width:auto;flex-shrink:0;display:block}
 .sticky-title{font-family:var(--sans);font-size:13px;font-weight:700;color:#fff;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -232,7 +232,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Monthly Trend</div>
         <div class="section-title" style="display:none" id="rChartRowLabel">Trend & Procedure</div>
         <div class="chart-row">
-        <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Total Case Volume</div><div class="chart-sub" id="rLS"></div></div><button class="toggle" id="rLT" onclick="tRL()"><span class="toggle-dot"></span>Show LY</button></div><div class="chart-wrap"><canvas id="rLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="rCY"></span></div><div class="legend-item" id="rLI" style="display:none"><div class="legend-line dashed"></div><span id="rLY"></span></div></div></div>
+        <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Total Case Volume</div><div class="chart-sub" id="rLS"></div></div><button class="toggle" id="rLT" onclick="tRL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="rLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="rCY"></span></div><div class="legend-item" id="rLI" style="display:none"><div class="legend-line dashed"></div><span id="rLY"></span></div></div></div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">By Procedure Type</div><div class="chart-sub" id="rPS"></div></div></div><div class="proc-mix-wrap"><div class="proc-donut-wrap"><canvas id="rPC"></canvas></div><div class="proc-list" id="rPL"></div></div></div>
         </div>
         <div class="section-title">Hospital Ranking</div>
@@ -253,7 +253,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Performance</div>
         <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-period" id="dMP"></div><div class="kpi-value" id="dMV">0</div><div id="dMD"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-period" id="dYP"></div><div class="kpi-value" id="dYV">0</div><div id="dYD"></div></div></div>
         <div class="section-title">Monthly Volume</div>
-        <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="dLS"></div></div><button class="toggle" id="dLT" onclick="tDL()"><span class="toggle-dot"></span>Show LY</button></div><div class="chart-wrap"><canvas id="dLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="dCY"></span></div><div class="legend-item" id="dLI" style="display:none"><div class="legend-line dashed"></div><span id="dLY2"></span></div></div></div>
+        <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="dLS"></div></div><button class="toggle" id="dLT" onclick="tDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="dLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="dCY"></span></div><div class="legend-item" id="dLI" style="display:none"><div class="legend-line dashed"></div><span id="dLY2"></span></div></div></div>
         <div class="chart-row">
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">By Procedure Type</div><div class="chart-sub" id="dPS"></div></div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPC"></canvas></div></div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Top Physicians</div><div class="chart-sub" id="dPMS"></div></div><div class="interactive-hint-tag">Tap a slice to open physician</div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPhC"></canvas></div></div>
@@ -277,7 +277,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Performance</div>
         <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-period" id="pdMP"></div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-period" id="pdYP"></div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div></div></div>
         <div class="section-title">Monthly Volume</div>
-        <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show LY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
+        <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
         <div class="section-title">Procedure Mix</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">By Procedure Type</div><div class="chart-sub" id="pdPS"></div></div></div><div class="chart-wrap"><canvas id="pdPC"></canvas></div></div>
       </div>
@@ -329,7 +329,7 @@ const HABBR={'RONALD REAGAN UCLA MEDICAL CENTER':'UCLA','PROVIDENCE SAINT JOHNS 
 function hAbbr(h){return HABBR[h]||tc(h).split(' ').slice(0,2).join(' ')}
 function foldN(data,keyField,n){if(data.length<=n)return{labels:data.map(d=>d[keyField]),values:data.map(d=>d.count),hasOthers:false,othersCount:0,othersTotal:0};const top=data.slice(0,n);const rest=data.slice(n);const oc=rest.reduce((s,d)=>s+d.count,0);return{labels:[...top.map(d=>d[keyField]),'Others ('+rest.length+')'],values:[...top.map(d=>d.count),oc],hasOthers:true,othersCount:rest.length,othersTotal:oc}}
 function fold6(data,keyField){return foldN(data,keyField,6)}
-function bd(c,l){if(l===0&&c>0)return'<div class="delta new">NEW</div>';if(l===0)return'';const p=((c-l)/l*100).toFixed(1);return'<div class="delta '+(p>0?'up':'down')+'">'+(p>0?'↑':'↓')+' '+Math.abs(p)+'% vs LY</div>'}
+function bd(c,l){if(l===0&&c>0)return'<div class="delta new">NEW</div>';if(l===0)return'';const p=((c-l)/l*100).toFixed(1);return'<div class="delta '+(p>0?'up':'down')+'">'+(p>0?'↑':'↓')+' '+Math.abs(p)+'% vs PY</div>'}
 function ac(id,t){const el=document.getElementById(id);const s=performance.now();(function tick(n){const p=Math.min((n-s)/600,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3))).toLocaleString();if(p<1)requestAnimationFrame(tick)})(performance.now())}
 function lu(a,k,v,f,d){const r=a.find(x=>x[k]===v);return r?r[f]:d}
 function luHP(a,h,p){const r=a.find(x=>x.hospital===h&&x.physician===p);return r?r.count:0}
