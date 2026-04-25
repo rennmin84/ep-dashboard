@@ -190,7 +190,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
   .desktop-nav{display:none!important}
   .kpi-card{display:flex;flex-direction:column}
   .kpi-label{order:1}
-  .kpi-period{order:2;position:static;top:auto;right:auto;margin-top:2px;margin-bottom:4px;font-size:9px;padding-left:10px}
+  .kpi-period{order:2;position:static;top:auto;right:auto;margin-top:0;margin-bottom:10px;font-size:9px;padding-left:10px}
   .kpi-value{order:3}
   .kpi-card>div[id$="MD"],.kpi-card>div[id$="YD"]{order:4}
 }
@@ -548,7 +548,7 @@ function hAbbr(h){return HABBR[h]||tc(h).split(' ').slice(0,2).join(' ')}
 function shortPhys(n){const w=n.split(' ');return w.length>2?w.slice(0,2).join(' '):n}
 function foldN(data,keyField,n){if(data.length<=n)return{labels:data.map(d=>d[keyField]),values:data.map(d=>d.count),hasOthers:false,othersCount:0,othersTotal:0};const top=data.slice(0,n);const rest=data.slice(n);const oc=rest.reduce((s,d)=>s+d.count,0);return{labels:[...top.map(d=>d[keyField]),'Others ('+rest.length+')'],values:[...top.map(d=>d.count),oc],hasOthers:true,othersCount:rest.length,othersTotal:oc}}
 function fold6(data,keyField){return foldN(data,keyField,6)}
-function bd(c,l){if(l===0&&c>0)return'<div class="delta new">NEW</div>';if(l===0)return'';const d=c-l,p=Math.round((c-l)/l*100),s=d>=0?'+':'';return'<div class="delta '+(d>=0?'up':'down')+'">'+(d>=0?'↑':'↓')+' '+s+d+' ('+s+p+'%)</div>'}
+function bd(c,l){if(l===0&&c>0)return'<div class="delta new">NEW</div>';if(l===0)return'';const d=c-l,p=Math.round((c-l)/l*100),s=d>=0?'+':'';return'<div class="delta '+(d>=0?'up':'down')+'">'+(d>=0?'↑':'↓')+' '+s+d+' &nbsp;('+s+p+'%)</div>'}
 function ac(id,t){const el=document.getElementById(id);const s=performance.now();(function tick(n){const p=Math.min((n-s)/600,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3))).toLocaleString();if(p<1)requestAnimationFrame(tick)})(performance.now())}
 function lu(a,k,v,f,d){const r=a.find(x=>x[k]===v);return r?r[f]:d}
 function luHP(a,h,p){const r=a.find(x=>x.hospital===h&&x.physician===p);return r?r.count:0}
