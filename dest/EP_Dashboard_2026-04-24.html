@@ -551,7 +551,7 @@ function co(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{
 function doo(){return{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{font:{size:10,family:'-apple-system'},color:'#5a574c',boxWidth:10,boxHeight:10,padding:6}}},animation:{animateRotate:true,duration:800}}}
 function mkC(id,type,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),{type,...cfg});return charts[id]}
 function gradFill(color){return function(ctx){const c=ctx.chart,area=c.chartArea;if(!area)return color+'00';const g=c.ctx.createLinearGradient(0,area.top,0,area.bottom);g.addColorStop(0,color+'40');g.addColorStop(1,color+'00');return g}}
-function cyPts(color){const r=Array(12).fill(3),bc=Array(12).fill(color||'#EB1700'),bw=Array(12).fill(0);r[M.last_month-1]=6;bc[M.last_month-1]='#fff';bw[M.last_month-1]=2.5;return{pointRadius:r,pointBackgroundColor:bc,pointBorderColor:Array(12).fill(color||'#EB1700'),pointBorderWidth:bw}}
+function cyPts(color){const r=Array(12).fill(3),bc=Array(12).fill(color||'#EB1700'),bw=Array(12).fill(0);r[M.last_month-1]=4;bc[M.last_month-1]='#fff';bw[M.last_month-1]=1.5;return{pointRadius:r,pointBackgroundColor:bc,pointBorderColor:Array(12).fill(color||'#EB1700'),pointBorderWidth:bw}}
 
 // === TAB SWITCHING ===
 function sw(t){
