@@ -68,7 +68,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .kpi-label::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:3px;background:var(--bw);border-radius:2px}
 .kpi-period{font-size:9px;color:var(--text4);font-family:var(--mono);position:absolute;top:22px;right:22px}
 .kpi-value{font-family:var(--sans);font-size:44px;font-weight:800;line-height:1;margin-bottom:12px;margin-top:12px;color:var(--text);letter-spacing:-.8px;font-variant-numeric:tabular-nums}
-.kpi-spark{margin-top:14px;height:24px;line-height:0}
 .delta{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px}
 .delta.up{background:var(--green-bg);color:var(--green)}.delta.down{background:var(--red-bg);color:var(--red-bright)}.delta.new{background:var(--gold-bg);color:var(--gold)}
 
@@ -441,7 +440,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="header"><div class="page-title">Region Summary</div><div class="page-sub">Los Angeles, LA – KA</div></div>
         <div class="territory-banner"><div class="territory-top">Coverage YTD</div><div class="territory-stats"><div class="territory-stat"><div class="territory-stat-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg></div><div class="territory-stat-text"><div class="territory-stat-value" id="rHC">0</div><div class="territory-stat-label">Hospitals</div></div></div><div class="territory-stat"><div class="territory-stat-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="territory-stat-text"><div class="territory-stat-value" id="rMC">0</div><div class="territory-stat-label">Physicians</div></div></div></div></div>
         <div class="section-title">Territory Performance</div>
-        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="rMV">0</div><div id="rMD"></div><div class="kpi-period" id="rMP"></div><div class="kpi-spark" id="rMS"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="rYV">0</div><div id="rYD"></div><div class="kpi-period" id="rYP"></div><div class="kpi-spark" id="rYS"></div></div></div>
+        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="rMV">0</div><div id="rMD"></div><div class="kpi-period" id="rMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="rYV">0</div><div id="rYD"></div><div class="kpi-period" id="rYP"></div></div></div>
         <div class="section-title">Monthly Trend</div>
         <div class="section-title" style="display:none" id="rChartRowLabel">Trend & Procedure</div>
         <div class="chart-row">
@@ -463,7 +462,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="header"><div class="page-title">Hospital Detail</div><div class="page-sub">Individual Performance</div></div>
         <div class="selector" id="hSel" onclick="tDD('hDD')"><div><div class="selector-label">Hospital</div><div class="selector-value" id="hN">Loading...</div></div><div class="selector-arrow">▾</div><div class="dropdown" id="hDD"></div></div>
         <div class="section-title">Performance</div>
-        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="dMV">0</div><div id="dMD"></div><div class="kpi-period" id="dMP"></div><div class="kpi-spark" id="dMS"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="dYV">0</div><div id="dYD"></div><div class="kpi-period" id="dYP"></div><div class="kpi-spark" id="dYS"></div></div></div>
+        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="dMV">0</div><div id="dMD"></div><div class="kpi-period" id="dMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="dYV">0</div><div id="dYD"></div><div class="kpi-period" id="dYP"></div></div></div>
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="dLS"></div></div><button class="toggle" id="dLT" onclick="tDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="dLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="dCY"></span></div><div class="legend-item" id="dLI" style="display:none"><div class="legend-line dashed"></div><span id="dLY2"></span></div></div></div>
         <div class="chart-row">
@@ -486,7 +485,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         </div>
         <div id="pdTabs"></div>
         <div class="section-title">Performance</div>
-        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div><div class="kpi-period" id="pdMP"></div><div class="kpi-spark" id="pdMS"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div><div class="kpi-period" id="pdYP"></div><div class="kpi-spark" id="pdYS"></div></div></div>
+        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div><div class="kpi-period" id="pdMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div><div class="kpi-period" id="pdYP"></div></div></div>
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
         <div class="section-title">Procedure Mix</div>
@@ -545,9 +544,6 @@ function shortPhys(n){const w=n.split(' ');return w.length>2?w.slice(0,2).join('
 function foldN(data,keyField,n){if(data.length<=n)return{labels:data.map(d=>d[keyField]),values:data.map(d=>d.count),hasOthers:false,othersCount:0,othersTotal:0};const top=data.slice(0,n);const rest=data.slice(n);const oc=rest.reduce((s,d)=>s+d.count,0);return{labels:[...top.map(d=>d[keyField]),'Others ('+rest.length+')'],values:[...top.map(d=>d.count),oc],hasOthers:true,othersCount:rest.length,othersTotal:oc}}
 function fold6(data,keyField){return foldN(data,keyField,6)}
 function bd(c,l){if(l===0&&c>0)return'<div class="delta new">NEW</div>';if(l===0)return'';const d=c-l,p=Math.round((c-l)/l*100),s=d>=0?'+':'';return'<div class="delta '+(d>=0?'up':'down')+'">'+(d>=0?'↑':'↓')+' '+s+d+' vs PY ('+s+p+'%)</div>'}
-function lastNYM(n){const list=[];let y=M.last_year,m=M.last_month;for(let i=0;i<n;i++){list.unshift(y*100+m);m--;if(m===0){m=12;y--}}return list}
-function buildSparkVals(records,n){const map=new Map();records.forEach(r=>{const[y,mo]=r.ym.split('-').map(Number);const k=y*100+mo;map.set(k,(map.get(k)||0)+(r.count||0))});return lastNYM(n).map(k=>map.get(k)||0)}
-function drawSpark(elId,vals){const n=vals.length,w=100,h=24,max=Math.max(...vals,1),bw=w/n,gap=bw*0.28;const bars=vals.map((v,i)=>{const bh=max>0?(v/max)*h:0,x=i*bw+gap/2,y=h-bh,fill=i===n-1?'#EB1700':'#d9d4c5';return'<rect x="'+x+'" y="'+y+'" width="'+(bw-gap)+'" height="'+bh+'" fill="'+fill+'" rx="0.8"/>'}).join('');document.getElementById(elId).innerHTML='<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" width="100%" height="'+h+'">'+bars+'</svg>'}
 function ac(id,t){const el=document.getElementById(id);const s=performance.now();(function tick(n){const p=Math.min((n-s)/600,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3))).toLocaleString();if(p<1)requestAnimationFrame(tick)})(performance.now())}
 function lu(a,k,v,f,d){const r=a.find(x=>x[k]===v);return r?r[f]:d}
 function luHP(a,h,p){const r=a.find(x=>x.hospital===h&&x.physician===p);return r?r.count:0}
@@ -581,7 +577,6 @@ function initRegion(){
   ac('rMV',D.region_mtd_current);ac('rYV',D.region_ytd_current);
   document.getElementById('rMD').innerHTML=bd(D.region_mtd_current,D.region_mtd_ly_full);
   document.getElementById('rYD').innerHTML=bd(D.region_ytd_current,D.region_ytd_ly);
-  const rSV=buildSparkVals(D.region_monthly,12);drawSpark('rMS',rSV);drawSpark('rYS',rSV);
   uRL();buildRP();buildHC();buildPhR();
 }
 function uRL(){
@@ -650,7 +645,6 @@ function updateDetail(){
   document.getElementById('dMP').textContent=MO[M.last_month-1]+' 1 – '+M.last_day;
   document.getElementById('dYP').textContent='Jan 1 – '+MO[M.last_month-1]+' '+M.last_day;
   document.getElementById('dMD').innerHTML=bd(mc,ml);document.getElementById('dYD').innerHTML=bd(yc,yl);
-  const dSV=buildSparkVals(D.hospital_monthly.filter(x=>x.hospital===cH),12);drawSpark('dMS',dSV);drawSpark('dYS',dSV);
   uDLine();uDProc();uDPhysMix();
 }
 function uDLine(){
@@ -738,7 +732,6 @@ function updatePhysDet(){
   document.getElementById('pdMP').textContent=MO[M.last_month-1]+' 1 – '+M.last_day;
   document.getElementById('pdYP').textContent='Jan 1 – '+MO[M.last_month-1]+' '+M.last_day;
   document.getElementById('pdMD').innerHTML=bd(mc,ml);document.getElementById('pdYD').innerHTML=bd(yc,yl);
-  const pdSrc=h==='all'?D.phys_monthly_all.filter(x=>x.physician===p):D.hospital_physician_monthly.filter(x=>x.hospital===h&&x.physician===p);const pdSV=buildSparkVals(pdSrc,12);drawSpark('pdMS',pdSV);drawSpark('pdYS',pdSV);
   uPDHComp();uPDLine();uPDProc();
 }
 function uPDHComp(){
