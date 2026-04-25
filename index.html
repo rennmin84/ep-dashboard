@@ -520,7 +520,7 @@ const VER='v1.7';
 function init(){
   const fd=MO[M.last_month-1]+' '+M.last_day+', '+M.last_year;
   const sp=document.getElementById('splash');
-  setTimeout(()=>{sp.style.opacity='0';setTimeout(()=>sp.style.display='none',500)},2400);
+  setTimeout(()=>{sp.style.opacity='0';setTimeout(()=>sp.style.display='none',500)},2900);
   const now=new Date(),d=new Date(M.last_date),diff=Math.floor((now-d)/864e5);
   const ago=diff===0?'TODAY':diff+' DAY'+(diff>1?'S':'')+' AGO';
   document.querySelectorAll('.date-display').forEach(e=>e.textContent=fd);
