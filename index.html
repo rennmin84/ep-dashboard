@@ -65,9 +65,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
 .kpi-card{background:#fff;color:var(--text);border-radius:18px;padding:18px 18px 16px;position:relative;overflow:hidden;border:1px solid var(--border)}
 .kpi-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(to right,var(--bw),transparent)}
-.kpi-label{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:2px}
-.kpi-period{font-size:9px;color:var(--text4);margin-bottom:10px;font-family:var(--mono)}
-.kpi-value{font-family:var(--sans);font-size:40px;font-weight:700;line-height:1;margin-bottom:10px;color:var(--text);letter-spacing:-.8px}
+.kpi-label{font-size:16px;color:var(--text);font-weight:700;margin-bottom:6px;letter-spacing:-.2px}
+.kpi-period{font-size:9px;color:var(--text4);margin-top:10px;font-family:var(--mono)}
+.kpi-value{font-family:var(--sans);font-size:44px;font-weight:800;line-height:1;margin-bottom:10px;color:var(--text);letter-spacing:-.8px}
 .delta{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px}
 .delta.up{background:var(--green-bg);color:var(--green)}.delta.down{background:var(--red-bg);color:var(--red-bright)}.delta.new{background:var(--gold-bg);color:var(--gold)}
 
@@ -440,7 +440,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="header"><div class="page-title">Region Summary</div><div class="page-sub">Los Angeles, LA – KA</div></div>
         <div class="territory-banner"><div class="territory-top">Coverage YTD</div><div class="territory-stats"><div class="territory-stat"><div class="territory-stat-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg></div><div class="territory-stat-text"><div class="territory-stat-value" id="rHC">0</div><div class="territory-stat-label">Hospitals</div></div></div><div class="territory-stat"><div class="territory-stat-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="territory-stat-text"><div class="territory-stat-value" id="rMC">0</div><div class="territory-stat-label">Physicians</div></div></div></div></div>
         <div class="section-title">Territory Performance</div>
-        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-period" id="rMP"></div><div class="kpi-value" id="rMV">0</div><div id="rMD"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-period" id="rYP"></div><div class="kpi-value" id="rYV">0</div><div id="rYD"></div></div></div>
+        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="rMV">0</div><div id="rMD"></div><div class="kpi-period" id="rMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="rYV">0</div><div id="rYD"></div><div class="kpi-period" id="rYP"></div></div></div>
         <div class="section-title">Monthly Trend</div>
         <div class="section-title" style="display:none" id="rChartRowLabel">Trend & Procedure</div>
         <div class="chart-row">
@@ -462,7 +462,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="header"><div class="page-title">Hospital Detail</div><div class="page-sub">Individual Performance</div></div>
         <div class="selector" id="hSel" onclick="tDD('hDD')"><div><div class="selector-label">Hospital</div><div class="selector-value" id="hN">Loading...</div></div><div class="selector-arrow">▾</div><div class="dropdown" id="hDD"></div></div>
         <div class="section-title">Performance</div>
-        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-period" id="dMP"></div><div class="kpi-value" id="dMV">0</div><div id="dMD"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-period" id="dYP"></div><div class="kpi-value" id="dYV">0</div><div id="dYD"></div></div></div>
+        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="dMV">0</div><div id="dMD"></div><div class="kpi-period" id="dMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="dYV">0</div><div id="dYD"></div><div class="kpi-period" id="dYP"></div></div></div>
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="dLS"></div></div><button class="toggle" id="dLT" onclick="tDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="dLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="dCY"></span></div><div class="legend-item" id="dLI" style="display:none"><div class="legend-line dashed"></div><span id="dLY2"></span></div></div></div>
         <div class="chart-row">
@@ -485,7 +485,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         </div>
         <div id="pdTabs"></div>
         <div class="section-title">Performance</div>
-        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-period" id="pdMP"></div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-period" id="pdYP"></div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div></div></div>
+        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div><div class="kpi-period" id="pdMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div><div class="kpi-period" id="pdYP"></div></div></div>
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
         <div class="section-title">Procedure Mix</div>
