@@ -758,16 +758,18 @@ function updatePhysDet(){
   document.getElementById('pdYP').textContent='Jan 1 – '+MO[M.last_month-1]+' '+M.last_day;
   document.getElementById('pdMD').innerHTML=bd(mc,ml);document.getElementById('pdYD').innerHTML=bd(yc,yl);
   uPDHComp();uPDLine();uPDProc();uPDRecent();
-  const scope=pdHTab==='all'?'All':hAbbr(pdHTab);
-  document.getElementById('pdPerfMeta').textContent='· '+scope;
-  document.getElementById('pdLMeta').textContent='· '+scope;
-  document.getElementById('pdPMeta').textContent='· '+scope;
+  const multi=D.phys_hospitals.filter(x=>x.physician===cPD).length>1;
+  const scope=multi?(pdHTab==='all'?'· All':'· '+hAbbr(pdHTab)):'';
+  document.getElementById('pdPerfMeta').textContent=scope;
+  document.getElementById('pdLMeta').textContent=scope;
+  document.getElementById('pdPMeta').textContent=scope;
 }
 function uPDRecent(){
   const phys=(D.recent_cases_by_physician||{})[cPD]||{};
   const rows=(pdHTab==='all'?phys.__all__:phys[pdHTab])||[];
-  const scope=pdHTab==='all'?'All':hAbbr(pdHTab);
-  document.getElementById('pdRCMeta').textContent='(Last '+rows.length+' cases)'+(scope?' · '+scope:'');
+  const multi=D.phys_hospitals.filter(x=>x.physician===cPD).length>1;
+  const scope=multi?(pdHTab==='all'?' · All':' · '+hAbbr(pdHTab)):'';
+  document.getElementById('pdRCMeta').textContent='(Last '+rows.length+' cases)'+scope;
   document.getElementById('pdRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+hAbbr(r.hospital)+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
 function uPDHComp(){
