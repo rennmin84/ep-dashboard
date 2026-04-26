@@ -491,7 +491,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div><div class="kpi-period" id="pdMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div><div class="kpi-period" id="pdYP"></div></div></div>
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
-        <div class="section-title">Procedure Mix</div>
+        <div class="section-title">Procedure Type</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">By Procedure Type</div><div class="chart-sub" id="pdPS"></div></div></div><div class="chart-wrap"><canvas id="pdPC"></canvas></div></div>
         <div class="section-title">Recent Cases</div><span class="recent-meta" id="pdRCMeta"></span>
         <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Hospital</th><th>Type</th><th>CAS</th></tr></thead><tbody id="pdRCBody"></tbody></table></div>
@@ -757,13 +757,7 @@ function updatePhysDet(){
 function uPDRecent(){
   const phys=(D.recent_cases_by_physician||{})[cPD]||{};
   const rows=(pdHTab==='all'?phys.__all__:phys[pdHTab])||[];
-  let scope;
-  if(pdHTab==='all'){
-    const hosps=D.phys_hospitals.filter(x=>x.physician===cPD).map(x=>hAbbr(x.hospital));
-    scope=hosps.length?hosps.join(' + '):'';
-  }else{
-    scope=hAbbr(pdHTab);
-  }
+  const scope=pdHTab==='all'?'All':hAbbr(pdHTab);
   document.getElementById('pdRCMeta').textContent='(Last '+rows.length+' cases)'+(scope?' · '+scope:'');
   document.getElementById('pdRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+hAbbr(r.hospital)+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
