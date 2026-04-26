@@ -164,6 +164,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .recent-table tr:last-child td{border-bottom:none}
 .recent-table tr.recent-year td{background:var(--bg2);text-align:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.2px;padding:5px 10px;border-bottom:1px solid var(--border2)}
 .recent-empty{padding:24px;text-align:center;color:var(--text3);font-size:11px}
+.phys-hospitals{font-family:var(--sans);font-size:11px;color:var(--text3);margin:-4px 0 14px;padding-left:4px;letter-spacing:.2px}
 
 /* Desktop responsive */
 @media(min-width:768px){
@@ -480,6 +481,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
       <div class="page-inner">
         <div class="header"><div class="page-title">Physician Detail</div><div class="page-sub">Individual Performance</div></div>
         <div class="selector" id="pdSel" onclick="tDD('pdDD')"><div><div class="selector-label">Physician</div><div class="selector-value" id="pdN">Loading...</div></div><div class="selector-arrow">▾</div><div class="dropdown" id="pdDD"></div></div>
+        <div class="phys-hospitals" id="pdHList"></div>
         <div id="pdHCompSection" style="display:none">
           <div class="section-title">Hospital Comparison</div>
           <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdHCompS"></div></div></div><div class="chart-wrap"><canvas id="pdHCompC"></canvas></div><div class="legend" id="pdHCompLegend"></div></div>
@@ -724,6 +726,8 @@ function buildPDDD(){
 }
 function selPD(p){
   cPD=p;pdHTab='all';document.getElementById('pdN').textContent=p;
+  const ph=D.phys_hospitals.filter(x=>x.physician===p).map(x=>hAbbr(x.hospital));
+  document.getElementById('pdHList').textContent=ph.length?'Practices at '+ph.join(' + '):'';
   var ps=document.getElementById('pdSearch');if(ps){ps.value='';document.getElementById('pdDDList').querySelectorAll('.dropdown-item').forEach(e=>e.style.display='');var nr=document.querySelector('#pdDDList .dd-no-result');if(nr)nr.remove();}
   document.querySelectorAll('#pdDD .dropdown-item').forEach(e=>e.classList.toggle('active',e.dataset.p===p));
   document.getElementById('pdDD').classList.remove('open');
