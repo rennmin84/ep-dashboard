@@ -172,6 +172,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
   .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch;margin-bottom:14px}
   .chart-row>.chart-card,.chart-row>.chart-pair>.chart-card{margin-bottom:0;display:flex;flex-direction:column}
   .chart-row>.chart-pair{display:flex;flex-direction:column}
+  .chart-row>.chart-pair>.section-title{align-self:flex-start}
+  .chart-row>.chart-pair>.chart-card{flex:1}
   .chart-row>.chart-card>.chart-wrap,.chart-row>.chart-pair>.chart-card>.chart-wrap{flex:1;min-height:260px}
   .chart-row>.chart-card>.proc-mix-wrap,.chart-row>.chart-pair>.chart-card>.proc-mix-wrap{flex:1;justify-content:center}
   .hospital-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -465,10 +467,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="dLS"></div></div><button class="toggle" id="dLT" onclick="tDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="dLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="dCY"></span></div><div class="legend-item" id="dLI" style="display:none"><div class="legend-line dashed"></div><span id="dLY2"></span></div></div></div>
         <div class="chart-row">
-        <div class="chart-pair"><div class="section-title">By Procedure Type</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPS"></div></div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPC"></canvas></div></div></div>
+        <div class="chart-pair"><div class="section-title">Procedure Type</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPS"></div></div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPC"></canvas></div></div></div>
         <div class="chart-pair"><div class="section-title">Top Physicians</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPMS"></div></div><div class="interactive-hint-tag">Tap a slice to open physician</div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPhC"></canvas></div></div></div>
         </div>
-        <div class="section-title">Recent Cases<span class="recent-meta" id="dRCMeta"></span></div>
+        <div class="section-title">Recent Cases</div><span class="recent-meta" id="dRCMeta"></span>
         <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Physician</th><th>Type</th><th>CAS</th></tr></thead><tbody id="dRCBody"></tbody></table></div>
       </div>
       <div class="page-footer" id="footerH"></div>
@@ -491,7 +493,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Case Trend</div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
         <div class="section-title">Procedure Mix</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-title">By Procedure Type</div><div class="chart-sub" id="pdPS"></div></div></div><div class="chart-wrap"><canvas id="pdPC"></canvas></div></div>
-        <div class="section-title">Recent Cases<span class="recent-meta" id="pdRCMeta"></span></div>
+        <div class="section-title">Recent Cases</div><span class="recent-meta" id="pdRCMeta"></span>
         <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Hospital</th><th>Type</th><th>CAS</th></tr></thead><tbody id="pdRCBody"></tbody></table></div>
       </div>
       <div class="page-footer" id="footerP"></div>
@@ -662,7 +664,7 @@ function renderRecent(rows,cols,extra){
 }
 function uDRecent(){
   const rows=(D.recent_cases_by_hospital&&D.recent_cases_by_hospital[cH])||[];
-  document.getElementById('dRCMeta').textContent='Last '+rows.length;
+  document.getElementById('dRCMeta').textContent='(Last '+rows.length+' cases)';
   document.getElementById('dRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+r.physician_dr+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
 function uDLine(){
@@ -762,7 +764,7 @@ function uPDRecent(){
   }else{
     scope=hAbbr(pdHTab);
   }
-  document.getElementById('pdRCMeta').textContent='Last '+rows.length+(scope?' · '+scope:'');
+  document.getElementById('pdRCMeta').textContent='(Last '+rows.length+' cases)'+(scope?' · '+scope:'');
   document.getElementById('pdRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+hAbbr(r.hospital)+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
 function uPDHComp(){
