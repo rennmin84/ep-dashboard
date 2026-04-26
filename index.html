@@ -164,8 +164,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .recent-table tr:last-child td{border-bottom:none}
 .recent-table tr.recent-year td{background:var(--bg2);text-align:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.2px;padding:5px 10px;border-bottom:1px solid var(--border2)}
 .recent-empty{padding:24px;text-align:center;color:var(--text3);font-size:11px}
-.phys-hospitals{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text2);margin:-4px 0 14px;padding-left:4px;letter-spacing:.2px;display:flex;align-items:center;gap:6px}
-.phys-hospitals svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.phys-hospitals{font-family:var(--sans);font-size:16px;font-weight:500;color:var(--text2);margin:0 0 14px;padding-left:4px;letter-spacing:.2px;display:flex;align-items:center;gap:6px}
+.phys-hospitals svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .phys-hospitals:empty{display:none}
 
 /* Desktop responsive */
@@ -489,7 +489,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdHCompS"></div></div></div><div class="chart-wrap"><canvas id="pdHCompC"></canvas></div><div class="legend" id="pdHCompLegend"></div></div>
         </div>
         <div id="pdTabs"></div>
-        <div class="section-title">Performance</div>
+        <div class="section-title">Performance</div><span class="recent-meta" id="pdPerfMeta"></span>
         <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div><div class="kpi-period" id="pdMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div><div class="kpi-period" id="pdYP"></div></div></div>
         <div class="section-title">Monthly Volume</div><span class="recent-meta" id="pdLMeta"></span>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
@@ -759,6 +759,7 @@ function updatePhysDet(){
   document.getElementById('pdMD').innerHTML=bd(mc,ml);document.getElementById('pdYD').innerHTML=bd(yc,yl);
   uPDHComp();uPDLine();uPDProc();uPDRecent();
   const scope=pdHTab==='all'?'All':hAbbr(pdHTab);
+  document.getElementById('pdPerfMeta').textContent='· '+scope;
   document.getElementById('pdLMeta').textContent='· '+scope;
   document.getElementById('pdPMeta').textContent='· '+scope;
 }
