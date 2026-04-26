@@ -164,7 +164,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .recent-table tr:last-child td{border-bottom:none}
 .recent-table tr.recent-year td{background:var(--bg2);text-align:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.2px;padding:5px 10px;border-bottom:1px solid var(--border2)}
 .recent-empty{padding:24px;text-align:center;color:var(--text3);font-size:11px}
-.phys-hospitals{font-family:var(--sans);font-size:11px;color:var(--text3);margin:-4px 0 14px;padding-left:4px;letter-spacing:.2px}
+.phys-hospitals{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text2);margin:-4px 0 14px;padding-left:4px;letter-spacing:.2px;display:flex;align-items:center;gap:6px}
+.phys-hospitals svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.phys-hospitals:empty{display:none}
 
 /* Desktop responsive */
 @media(min-width:768px){
@@ -489,9 +491,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div id="pdTabs"></div>
         <div class="section-title">Performance</div>
         <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="pdMV">0</div><div id="pdMD"></div><div class="kpi-period" id="pdMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="pdYV">0</div><div id="pdYD"></div><div class="kpi-period" id="pdYP"></div></div></div>
-        <div class="section-title">Monthly Volume</div>
+        <div class="section-title">Monthly Volume</div><span class="recent-meta" id="pdLMeta"></span>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdLS"></div></div><button class="toggle" id="pdLT" onclick="tPDL()"><span class="toggle-dot"></span>Show PY</button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
-        <div class="section-title">Procedure Type</div>
+        <div class="section-title">Procedure Type</div><span class="recent-meta" id="pdPMeta"></span>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdPS"></div></div></div><div class="chart-wrap"><canvas id="pdPC"></canvas></div></div>
         <div class="section-title">Recent Cases</div><span class="recent-meta" id="pdRCMeta"></span>
         <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Hospital</th><th>Type</th><th>CAS</th></tr></thead><tbody id="pdRCBody"></tbody></table></div>
@@ -727,7 +729,8 @@ function buildPDDD(){
 function selPD(p){
   cPD=p;pdHTab='all';document.getElementById('pdN').textContent=p;
   const ph=D.phys_hospitals.filter(x=>x.physician===p).map(x=>hAbbr(x.hospital));
-  document.getElementById('pdHList').textContent=ph.length?'Practices at '+ph.join(' + '):'';
+  const hList=document.getElementById('pdHList');
+  hList.innerHTML=ph.length?'<svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg>'+ph.join(' + '):'';
   var ps=document.getElementById('pdSearch');if(ps){ps.value='';document.getElementById('pdDDList').querySelectorAll('.dropdown-item').forEach(e=>e.style.display='');var nr=document.querySelector('#pdDDList .dd-no-result');if(nr)nr.remove();}
   document.querySelectorAll('#pdDD .dropdown-item').forEach(e=>e.classList.toggle('active',e.dataset.p===p));
   document.getElementById('pdDD').classList.remove('open');
@@ -755,6 +758,9 @@ function updatePhysDet(){
   document.getElementById('pdYP').textContent='Jan 1 – '+MO[M.last_month-1]+' '+M.last_day;
   document.getElementById('pdMD').innerHTML=bd(mc,ml);document.getElementById('pdYD').innerHTML=bd(yc,yl);
   uPDHComp();uPDLine();uPDProc();uPDRecent();
+  const scope=pdHTab==='all'?'All':hAbbr(pdHTab);
+  document.getElementById('pdLMeta').textContent='· '+scope;
+  document.getElementById('pdPMeta').textContent='· '+scope;
 }
 function uPDRecent(){
   const phys=(D.recent_cases_by_physician||{})[cPD]||{};
