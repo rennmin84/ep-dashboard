@@ -74,7 +74,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .selector{background:#fff;color:var(--text);border-radius:16px;padding:16px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;position:relative;border:1px solid var(--border)}
 .selector-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;font-weight:600}
 .selector-value{font-size:15px;font-weight:700;color:var(--text)}.selector-arrow{color:var(--text3)}
-@media (max-width:768px){.selector-value.long-name{font-size:13px}}
+#hN{font-size:13px}
 .dropdown{position:absolute;top:100%;left:0;right:0;z-index:60;background:#fff;border-radius:0 0 16px 16px;max-height:0;overflow:hidden;transition:max-height .3s ease;border:1px solid var(--border);border-top:none}
 .dropdown.open{max-height:400px;overflow-y:auto}
 .dd-search-wrap{padding:10px 14px 8px;position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border2);z-index:1}
@@ -642,7 +642,7 @@ function buildHDD(){
   dd.onclick=function(e){e.stopPropagation();var it=e.target.closest('.dropdown-item');if(it&&it.dataset.h){selH(it.dataset.h)}};
 }
 function selH(h){
-  cH=h;var hNel=document.getElementById('hN');var hTxt=tc(h);hNel.textContent=hTxt;hNel.classList.toggle('long-name',hTxt.length>30);
+  cH=h;document.getElementById('hN').textContent=tc(h);
   document.querySelectorAll('#hDD .dropdown-item').forEach(e=>e.classList.toggle('active',e.dataset.h===h));
   document.getElementById('hDD').classList.remove('open');
   updateDetail();
