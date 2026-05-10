@@ -183,6 +183,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .vari-divider{height:1px;background:var(--border2);margin:18px -18px}
 .vari-subtitle{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
 .vari-hosp-label{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--text2);width:120px;flex-shrink:0;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vari-row-link{cursor:pointer;border-radius:8px;margin-left:-6px;margin-right:-6px;padding:0 6px;transition:background .15s}
+.vari-row-link:hover{background:var(--bg2)}
+.vari-row-link:hover .vari-hosp-label{color:var(--bw)}
 .phys-hospitals{font-family:var(--sans);font-size:16px;font-weight:500;color:var(--text2);padding-left:4px;letter-spacing:.2px;display:flex;align-items:center;gap:6px}
 .phys-hospitals svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .phys-hospitals:empty{display:none}
@@ -476,6 +479,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           <div class="vari-divider"></div>
           <div class="vari-subtitle">By hospital · YTD</div>
           <div id="rVHList"></div>
+          <div class="vari-divider"></div>
+          <div class="vari-subtitle">Top adopters · YTD</div>
+          <div id="rVPList"></div>
         </div>
         <div class="section-title">Hospital Ranking</div>
         <div class="hospital-cards-grid" id="rHCards"></div>
@@ -635,13 +641,28 @@ function uRVari(){
     .filter(r=>r.af>0)
     .sort((a,b)=>b.pct-a.pct);
   document.getElementById('rVHList').innerHTML=rows.map((r,i)=>(
-    '<div class="vari-row">'
+    '<div class="vari-row vari-row-link" data-hosp="'+r.h+'">'
     +'<div class="vari-hosp-label" title="'+tc(r.h)+'">'+hAbbr(r.h)+'</div>'
     +'<div class="vari-bar"><div class="vari-bar-fill" id="rVH'+i+'Bar"></div><span class="vari-bar-pct" id="rVH'+i+'Pct"></span></div>'
     +'<div class="vari-stat" id="rVH'+i+'Stat"></div>'
     +'</div>'
   )).join('');
   rows.forEach((r,i)=>renderVariRow('rVH'+i+'Bar','rVH'+i+'Pct','rVH'+i+'Stat',r.af,r.vp));
+  document.getElementById('rVHList').onclick=function(e){var r=e.target.closest('[data-hosp]');if(r&&r.dataset.hosp)goH(r.dataset.hosp)};
+  const phys=Object.entries(D.varipulse_adoption_phys||{})
+    .map(([p,e])=>({p:p,af:e.__all__.ytd.af,vp:e.__all__.ytd.varipulse,pct:e.__all__.ytd.af>0?e.__all__.ytd.varipulse/e.__all__.ytd.af*100:-1}))
+    .filter(r=>r.vp>=1)
+    .sort((a,b)=>b.pct-a.pct)
+    .slice(0,5);
+  document.getElementById('rVPList').innerHTML=phys.map((r,i)=>(
+    '<div class="vari-row vari-row-link" data-phys="'+r.p+'">'
+    +'<div class="vari-hosp-label" title="'+r.p+'">'+r.p+'</div>'
+    +'<div class="vari-bar"><div class="vari-bar-fill" id="rVP'+i+'Bar"></div><span class="vari-bar-pct" id="rVP'+i+'Pct"></span></div>'
+    +'<div class="vari-stat" id="rVP'+i+'Stat"></div>'
+    +'</div>'
+  )).join('');
+  phys.forEach((r,i)=>renderVariRow('rVP'+i+'Bar','rVP'+i+'Pct','rVP'+i+'Stat',r.af,r.vp));
+  document.getElementById('rVPList').onclick=function(e){var r=e.target.closest('[data-phys]');if(r&&r.dataset.phys)goPD(r.dataset.phys)};
 }
 function uRL(){
   const cy=M.last_year,ly=cy-1,cyD=Array(12).fill(0),lyD=Array(12).fill(0);
