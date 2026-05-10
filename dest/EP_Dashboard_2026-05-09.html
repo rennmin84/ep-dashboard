@@ -479,9 +479,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           <div class="vari-divider"></div>
           <div class="vari-subtitle">By hospital · YTD</div>
           <div id="rVHList"></div>
-          <div class="vari-divider"></div>
-          <div class="vari-subtitle">Top adopters · YTD</div>
-          <div id="rVPList"></div>
         </div>
         <div class="section-title">Hospital Ranking</div>
         <div class="hospital-cards-grid" id="rHCards"></div>
@@ -510,6 +507,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="vari-card">
           <div class="vari-row"><div class="vari-label">MTD</div><div class="vari-bar"><div class="vari-bar-fill" id="dVMBar"></div><span class="vari-bar-pct" id="dVMPct"></span></div><div class="vari-stat" id="dVMStat"></div></div>
           <div class="vari-row"><div class="vari-label">YTD</div><div class="vari-bar"><div class="vari-bar-fill" id="dVYBar"></div><span class="vari-bar-pct" id="dVYPct"></span></div><div class="vari-stat" id="dVYStat"></div></div>
+          <div id="dVPSection" style="display:none">
+            <div class="vari-divider"></div>
+            <div class="vari-subtitle">Top adopters · YTD</div>
+            <div id="dVPList"></div>
+          </div>
         </div>
         <div class="section-title">Recent Cases</div><span class="recent-meta" id="dRCMeta"></span>
         <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Physician</th><th>Type</th><th>CAS</th></tr></thead><tbody id="dRCBody"></tbody></table></div>
@@ -649,20 +651,6 @@ function uRVari(){
   )).join('');
   rows.forEach((r,i)=>renderVariRow('rVH'+i+'Bar','rVH'+i+'Pct','rVH'+i+'Stat',r.af,r.vp));
   document.getElementById('rVHList').onclick=function(e){var r=e.target.closest('[data-hosp]');if(r&&r.dataset.hosp)goH(r.dataset.hosp)};
-  const phys=Object.entries(D.varipulse_adoption_phys||{})
-    .map(([p,e])=>({p:p,af:e.__all__.ytd.af,vp:e.__all__.ytd.varipulse,pct:e.__all__.ytd.af>0?e.__all__.ytd.varipulse/e.__all__.ytd.af*100:-1}))
-    .filter(r=>r.vp>=1)
-    .sort((a,b)=>b.pct-a.pct)
-    .slice(0,5);
-  document.getElementById('rVPList').innerHTML=phys.map((r,i)=>(
-    '<div class="vari-row vari-row-link" data-phys="'+r.p+'">'
-    +'<div class="vari-hosp-label" title="'+r.p+'">'+r.p+'</div>'
-    +'<div class="vari-bar"><div class="vari-bar-fill" id="rVP'+i+'Bar"></div><span class="vari-bar-pct" id="rVP'+i+'Pct"></span></div>'
-    +'<div class="vari-stat" id="rVP'+i+'Stat"></div>'
-    +'</div>'
-  )).join('');
-  phys.forEach((r,i)=>renderVariRow('rVP'+i+'Bar','rVP'+i+'Pct','rVP'+i+'Stat',r.af,r.vp));
-  document.getElementById('rVPList').onclick=function(e){var r=e.target.closest('[data-phys]');if(r&&r.dataset.phys)goPD(r.dataset.phys)};
 }
 function uRL(){
   const cy=M.last_year,ly=cy-1,cyD=Array(12).fill(0),lyD=Array(12).fill(0);
@@ -760,6 +748,23 @@ function uDVari(){
   const v=(D.varipulse_adoption||{})[cH]||{mtd:{af:0,varipulse:0},ytd:{af:0,varipulse:0}};
   renderVariRow('dVMBar','dVMPct','dVMStat',v.mtd.af,v.mtd.varipulse);
   renderVariRow('dVYBar','dVYPct','dVYStat',v.ytd.af,v.ytd.varipulse);
+  const phys=Object.entries(D.varipulse_adoption_phys||{})
+    .map(([p,e])=>{const h=e[cH];if(!h)return null;return{p:p,af:h.ytd.af,vp:h.ytd.varipulse,pct:h.ytd.af>0?h.ytd.varipulse/h.ytd.af*100:-1}})
+    .filter(r=>r&&r.vp>=1)
+    .sort((a,b)=>b.pct-a.pct)
+    .slice(0,3);
+  const section=document.getElementById('dVPSection');
+  section.style.display=phys.length>0?'block':'none';
+  if(phys.length===0)return;
+  document.getElementById('dVPList').innerHTML=phys.map((r,i)=>(
+    '<div class="vari-row vari-row-link" data-phys="'+r.p+'">'
+    +'<div class="vari-hosp-label" title="'+r.p+'">'+r.p+'</div>'
+    +'<div class="vari-bar"><div class="vari-bar-fill" id="dVP'+i+'Bar"></div><span class="vari-bar-pct" id="dVP'+i+'Pct"></span></div>'
+    +'<div class="vari-stat" id="dVP'+i+'Stat"></div>'
+    +'</div>'
+  )).join('');
+  phys.forEach((r,i)=>renderVariRow('dVP'+i+'Bar','dVP'+i+'Pct','dVP'+i+'Stat',r.af,r.vp));
+  document.getElementById('dVPList').onclick=function(e){var r=e.target.closest('[data-phys]');if(r&&r.dataset.phys)goPD(r.dataset.phys)};
 }
 function uPDVari(){
   const phys=(D.varipulse_adoption_phys||{})[cPD]||{};
