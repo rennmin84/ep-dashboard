@@ -107,8 +107,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .proc-bottom{display:flex;align-items:center;gap:8px}
 .proc-bar-wrap{flex:1;height:4px;background:var(--border2);border-radius:100px;overflow:hidden}.proc-bar-fill{height:100%;border-radius:100px}
 .proc-pct{font-family:var(--mono);font-size:9px;color:var(--text3);min-width:28px}
-.proc-yoy{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;font-family:var(--mono);white-space:nowrap}
-.proc-yoy.up{background:var(--green-bg);color:var(--green)}.proc-yoy.down{background:var(--red-bg);color:var(--red)}.proc-yoy.flat{background:var(--bg2);color:var(--text3)}
 
 /* Hospital cards */
 .hospital-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;cursor:pointer;transition:all .2s}
@@ -507,7 +505,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dLS"></div></div><button class="py-tg" id="dLT" onclick="tDL()"></button></div><div class="chart-wrap"><canvas id="dLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="dCY"></span></div><div class="legend-item" id="dLI" style="display:none"><div class="legend-line dashed"></div><span id="dLY2"></span></div></div></div>
         <div class="chart-row">
-        <div class="chart-pair"><div class="section-title">Procedure Type</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPS"></div></div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPC"></canvas></div></div></div>
+        <div class="chart-pair"><div class="section-title">Procedure Type</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPS"></div></div></div><div class="proc-mix-wrap"><div class="proc-donut-wrap"><canvas id="dPC"></canvas></div><div class="proc-list" id="dPL"></div></div></div></div>
         <div class="chart-pair"><div class="section-title">Top Physicians</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPMS"></div></div><div class="interactive-hint-tag">Tap a slice to open physician</div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPhC"></canvas></div></div></div>
         </div>
         <div class="section-title">Varipulse Adoption Rate</div>
@@ -548,7 +546,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Monthly Volume</div><span class="recent-meta" id="pdLMeta"></span>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdLS"></div></div><button class="py-tg" id="pdLT" onclick="tPDL()"></button></div><div class="chart-wrap"><canvas id="pdLC"></canvas></div></div>
         <div class="section-title">Procedure Type</div><span class="recent-meta" id="pdPMeta"></span>
-        <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdPS"></div></div></div><div class="chart-wrap"><canvas id="pdPC"></canvas></div></div>
+        <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="pdPS"></div></div></div><div class="proc-mix-wrap"><div class="proc-donut-wrap"><canvas id="pdPC"></canvas></div><div class="proc-list" id="pdPL"></div></div></div>
         <div class="section-title">Varipulse Adoption Rate</div><span class="recent-meta" id="pdVMeta"></span>
         <div class="vari-note">Within Carto-mapped AF: Varipulse vs. Farapulse.</div>
         <div class="vari-card">
@@ -686,18 +684,22 @@ function uRL(){
   mkC('rLC','line',{data:{labels:MO,datasets:ds},options:co()});
 }
 function tRL(){sRL=!sRL;uRL()}
-function buildRP(){
-  const data=D.region_procedure_ytd,lyD=D.region_procedure_ytd_ly,total=data.reduce((s,d)=>s+d.count,0);
-  document.getElementById('rPS').textContent='YTD '+M.last_year+' · '+total.toLocaleString()+' cases';
+function rnPL(elId,data){
+  const total=data.reduce((s,d)=>s+d.count,0);
+  if(total===0){document.getElementById(elId).innerHTML='';return}
   const top=data.slice(0,6),rest=data.slice(6),othersCnt=rest.reduce((s,d)=>s+d.count,0);
   const mx=top.length>0?top[0].count:1;
   let rows=top.map((d,i)=>{
-    const li=lyD.find(x=>x.procedure===d.procedure),lv=li?li.count:0,pct=Math.round(d.count/total*100),bw=Math.round(d.count/mx*100);
-    let yh;if(lv===0)yh='<div class="proc-yoy flat">NEW</div>';else{const y=Math.round((d.count-lv)/lv*100);yh='<div class="proc-yoy '+(y>0?'up':y<0?'down':'flat')+'">'+(y>0?'↑':y<0?'↓':'±')+Math.abs(y)+'%</div>'}
-    return'<div class="proc-row"><div class="proc-dot" style="background:'+PC[i]+'"></div><div class="proc-content"><div class="proc-top"><span class="proc-name">'+d.procedure+'</span><span class="proc-count">'+d.count+'</span></div><div class="proc-bottom"><div class="proc-bar-wrap"><div class="proc-bar-fill" style="width:'+bw+'%;background:'+PC[i]+'"></div></div><span class="proc-pct">'+pct+'%</span>'+yh+'</div></div></div>'
+    const pct=Math.round(d.count/total*100),bw=Math.round(d.count/mx*100);
+    return'<div class="proc-row"><div class="proc-dot" style="background:'+PC[i]+'"></div><div class="proc-content"><div class="proc-top"><span class="proc-name">'+d.procedure+'</span><span class="proc-count">'+d.count+'</span></div><div class="proc-bottom"><div class="proc-bar-wrap"><div class="proc-bar-fill" style="width:'+bw+'%;background:'+PC[i]+'"></div></div><span class="proc-pct">'+pct+'%</span></div></div></div>'
   }).join('');
-  if(rest.length>0){const opct=Math.round(othersCnt/total*100);const obw=Math.round(othersCnt/mx*100);rows+='<div class="proc-row"><div class="proc-dot" style="background:'+OTHERS_COLOR+'"></div><div class="proc-content"><div class="proc-top"><span class="proc-name" style="color:var(--text3)">Others ('+rest.length+' procedures)</span><span class="proc-count">'+othersCnt+'</span></div><div class="proc-bottom"><div class="proc-bar-wrap"><div class="proc-bar-fill" style="width:'+obw+'%;background:'+OTHERS_COLOR+'"></div></div><span class="proc-pct">'+opct+'%</span></div></div></div>'}
-  document.getElementById('rPL').innerHTML=rows;
+  if(rest.length>0){const opct=Math.round(othersCnt/total*100),obw=Math.round(othersCnt/mx*100);rows+='<div class="proc-row"><div class="proc-dot" style="background:'+OTHERS_COLOR+'"></div><div class="proc-content"><div class="proc-top"><span class="proc-name" style="color:var(--text3)">Others ('+rest.length+' procedures)</span><span class="proc-count">'+othersCnt+'</span></div><div class="proc-bottom"><div class="proc-bar-wrap"><div class="proc-bar-fill" style="width:'+obw+'%;background:'+OTHERS_COLOR+'"></div></div><span class="proc-pct">'+opct+'%</span></div></div></div>'}
+  document.getElementById(elId).innerHTML=rows;
+}
+function buildRP(){
+  const data=D.region_procedure_ytd,total=data.reduce((s,d)=>s+d.count,0);
+  document.getElementById('rPS').textContent='YTD '+M.last_year+' · '+total.toLocaleString()+' cases';
+  rnPL('rPL',data);
   const fd=fold6(data,'procedure');
   mkC('rPC','doughnut',{data:{labels:fd.labels,datasets:[{data:fd.values,backgroundColor:palWithOthers(PC,fd.labels.length,fd.hasOthers),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},animation:{animateRotate:true,duration:800}}});
 }
@@ -841,8 +843,9 @@ function uDProc(){
   const data=D.hospital_procedure_ytd.filter(x=>x.hospital===cH).sort((a,b)=>b.count-a.count);
   const total=data.reduce((s,d)=>s+d.count,0);
   document.getElementById('dPS').textContent='YTD '+M.last_year+' · '+total+' cases';
+  rnPL('dPL',data);
   const fd=fold6(data,'procedure');
-  mkC('dPC','doughnut',{data:{labels:fd.labels,datasets:[{data:fd.values,backgroundColor:palWithOthers(PC,fd.labels.length,fd.hasOthers),borderWidth:2,borderColor:'#fff'}]},options:doo()});
+  mkC('dPC','doughnut',{data:{labels:fd.labels,datasets:[{data:fd.values,backgroundColor:palWithOthers(PC,fd.labels.length,fd.hasOthers),borderWidth:2,borderColor:'#fff'}]},options:{...doo(),plugins:{legend:{display:false}}}});
 }
 function gPF(h){return D.hospital_physician_ytd.filter(x=>x.hospital===h).sort((a,b)=>b.count-a.count)}
 function uDPhysMix(){
@@ -968,8 +971,9 @@ function uPDProc(){
   else data=D.hospital_physician_procedure_ytd.filter(x=>x.hospital===h&&x.physician===p).sort((a,b)=>b.count-a.count);
   const total=data.reduce((s,d)=>s+d.count,0);
   document.getElementById('pdPS').textContent='YTD '+M.last_year+' · '+total+' cases'+(h!=='all'?' at '+hAbbr(h):'');
+  rnPL('pdPL',data);
   const fd=fold6(data,'procedure');
-  mkC('pdPC','doughnut',{data:{labels:fd.labels,datasets:[{data:fd.values,backgroundColor:palWithOthers(PC,fd.labels.length,fd.hasOthers),borderWidth:2,borderColor:'#fff'}]},options:doo()});
+  mkC('pdPC','doughnut',{data:{labels:fd.labels,datasets:[{data:fd.values,backgroundColor:palWithOthers(PC,fd.labels.length,fd.hasOthers),borderWidth:2,borderColor:'#fff'}]},options:{...doo(),plugins:{legend:{display:false}}}});
 }
 
 // === NAVIGATION ===
