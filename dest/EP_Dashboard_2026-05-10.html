@@ -73,9 +73,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 /* Custom chart tooltip */
 .cttp{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;box-shadow:0 4px 14px rgba(26,26,26,.08);transform:translate(-50%,calc(-100% - 14px));transition:opacity .12s ease,transform .12s ease;opacity:0;z-index:100;font-family:var(--sans);white-space:nowrap;font-variant-numeric:tabular-nums}
 .cttp-period{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px}
-.cttp-value{font-size:18px;font-weight:700;color:var(--text);line-height:1.1;letter-spacing:-.2px}
+.cttp-value{font-size:12px;font-weight:700;color:var(--text);line-height:1.1}
 .cttp-delta{font-family:var(--mono);font-size:10px;font-weight:700;margin-top:4px;letter-spacing:.2px}
 .cttp-delta.pos{color:var(--green)}.cttp-delta.neg{color:var(--red)}
+.cttp-row{display:flex;align-items:center;gap:6px;font-size:11px;margin-top:3px;color:var(--text)}
+.cttp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.cttp-rowL{font-weight:600;flex:1;padding-right:8px}
+.cttp-rowV{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
 
 /* Selectors */
 .selector{background:#fff;color:var(--text);border-radius:16px;padding:16px 20px;margin-top:28px;margin-bottom:0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;position:relative;border:1px solid var(--border)}
@@ -648,7 +652,7 @@ function doo(){return{responsive:true,maintainAspectRatio:false,cutout:'62%',plu
 function mkC(id,type,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),{type,...cfg});return charts[id]}
 function gradFill(color){return function(ctx){const c=ctx.chart,area=c.chartArea;if(!area)return color+'00';const g=c.ctx.createLinearGradient(0,area.top,0,area.bottom);g.addColorStop(0,color+'40');g.addColorStop(1,color+'00');return g}}
 function cyPts(color){const r=Array(12).fill(3),bc=Array(12).fill(color||'#EB1700'),bw=Array(12).fill(0);r[M.last_month-1]=4;bc[M.last_month-1]='#fff';bw[M.last_month-1]=1.5;return{pointRadius:r,pointBackgroundColor:bc,pointBorderColor:Array(12).fill(color||'#EB1700'),pointBorderWidth:bw}}
-function extTT(ctx){var el=document.getElementById('cttp');if(!el){el=document.createElement('div');el.id='cttp';el.className='cttp';document.body.appendChild(el)}var t=ctx.tooltip;if(!t||t.opacity===0){el.style.opacity=0;return}var dp=t.dataPoints;if(!dp||!dp.length){el.style.opacity=0;return}var i=dp[0].dataIndex,ds=ctx.chart.data.datasets,cy=ds[0].data[i],cyL=ds[0].label,mo=MO[i];if(cy==null){el.style.opacity=0;return}var h='<div class="cttp-period">'+mo.toUpperCase()+' '+cyL+'</div><div class="cttp-value">'+cy+' case'+(cy===1?'':'s')+'</div>';if(ds.length>1){var ly=ds[1].data[i],lyL=ds[1].label;if(ly!=null&&ly>0){var p=Math.round((cy-ly)/ly*100),s=p>0?'+':'',c=p>0?'pos':(p<0?'neg':'');h+='<div class="cttp-delta '+c+'">'+s+p+'% vs '+mo+' '+lyL+'</div>'}}el.innerHTML=h;var r=ctx.chart.canvas.getBoundingClientRect();el.style.opacity=1;el.style.left=(r.left+window.pageXOffset+t.caretX)+'px';el.style.top=(r.top+window.pageYOffset+t.caretY)+'px'}
+function extTT(ctx){var el=document.getElementById('cttp');if(!el){el=document.createElement('div');el.id='cttp';el.className='cttp';document.body.appendChild(el)}var t=ctx.tooltip;if(!t||t.opacity===0){el.style.opacity=0;return}var dp=t.dataPoints;if(!dp||!dp.length){el.style.opacity=0;return}var i=dp[0].dataIndex,ds=ctx.chart.data.datasets,mo=MO[i],yoy=ds.length<=2&&/^\d{4}$/.test(ds[0].label),yr=yoy?ds[0].label:(M&&M.last_year)||'',h='<div class="cttp-period">'+mo.toUpperCase()+(yr?(' '+yr):'')+'</div>';if(yoy){var cy=ds[0].data[i];if(cy==null){el.style.opacity=0;return}h+='<div class="cttp-value">'+cy+' case'+(cy===1?'':'s')+'</div>';if(ds.length>1){var ly=ds[1].data[i],lyL=ds[1].label;if(ly!=null&&ly>0){var p=Math.round((cy-ly)/ly*100),s=p>0?'+':'',c=p>0?'pos':(p<0?'neg':'');h+='<div class="cttp-delta '+c+'">'+s+p+'% vs '+mo+' '+lyL+'</div>'}}}else{var rows=ds.map(function(d){var v=d.data[i];if(v==null)return null;return '<div class="cttp-row"><span class="cttp-dot" style="background:'+(d.borderColor||'#1a1a1a')+'"></span><span class="cttp-rowL">'+d.label+'</span><span class="cttp-rowV">'+v+'</span></div>'}).filter(Boolean);if(!rows.length){el.style.opacity=0;return}h+=rows.join('')}el.innerHTML=h;var r=ctx.chart.canvas.getBoundingClientRect();el.style.opacity=1;el.style.left=(r.left+window.pageXOffset+t.caretX)+'px';el.style.top=(r.top+window.pageYOffset+t.caretY)+'px'}
 function coTT(){var o=co();o.interaction={mode:'index',intersect:false};o.plugins.tooltip={enabled:false,external:extTT};return o}
 
 // === TAB SWITCHING ===
@@ -861,7 +865,7 @@ function uDLine(){
   btn.classList.toggle('off',!sDL);
   const ds=[{label:String(cy),data:cyD,borderColor:'#EB1700',backgroundColor:gradFill('#EB1700'),fill:true,borderWidth:2.5,...cyPts(),tension:.3}];
   if(sDL)ds.push({label:String(ly),data:lyD,borderColor:'#b8b4a8',borderDash:[4,4],borderWidth:1.5,pointRadius:0,tension:.3});
-  mkC('dLC','line',{data:{labels:MO,datasets:ds},options:co()});
+  mkC('dLC','line',{data:{labels:MO,datasets:ds},options:coTT()});
 }
 function tDL(){sDL=!sDL;uDLine()}
 function uDProc(){
@@ -983,7 +987,7 @@ function uPDHComp(){
   const total=hosps.reduce((s,h)=>s+h.count,0);
   document.getElementById('pdHCompS').textContent=cy+' · '+total+' YTD cases across '+hosps.length+' hospitals';
   document.getElementById('pdHCompLegend').innerHTML=hosps.map((h,i)=>'<div class="legend-item"><div class="legend-line" style="background:'+colors[i%colors.length]+'"></div><span>'+hAbbr(h.hospital)+'</span></div>').join('');
-  mkC('pdHCompC','line',{data:{labels:MO,datasets:ds},options:co()});
+  mkC('pdHCompC','line',{data:{labels:MO,datasets:ds},options:coTT()});
 }
 function uPDLine(){
   const cy=M.last_year,ly=cy-1,p=cPD,h=pdHTab;
@@ -999,7 +1003,7 @@ function uPDLine(){
   btn.classList.toggle('off',!sPDL);
   const ds=[{label:String(cy),data:cyD,borderColor:'#EB1700',backgroundColor:gradFill('#EB1700'),fill:true,borderWidth:2.5,...cyPts(),tension:.3}];
   if(sPDL)ds.push({label:String(ly),data:lyD,borderColor:'#b8b4a8',borderDash:[4,4],borderWidth:1.5,pointRadius:0,tension:.3});
-  mkC('pdLC','line',{data:{labels:MO,datasets:ds},options:co()});
+  mkC('pdLC','line',{data:{labels:MO,datasets:ds},options:coTT()});
 }
 function tPDL(){sPDL=!sPDL;uPDLine()}
 function uPDProc(){
