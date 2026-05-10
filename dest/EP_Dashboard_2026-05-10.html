@@ -161,14 +161,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .recent-meta{font-family:var(--sans);font-size:11px;font-weight:500;color:var(--text3);margin-left:8px;letter-spacing:.2px}
 .recent-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:28px;margin-bottom:14px;flex-wrap:wrap}
 .recent-header .section-title{margin-top:0;margin-bottom:0}
-.rc-control{display:inline-flex;align-items:center;gap:8px;position:relative;cursor:pointer;font-family:var(--sans);user-select:none}
-.rc-control-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);font-weight:600}
-.rc-pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:5px 10px 5px 12px;font-size:12px;font-weight:700;color:var(--text);min-width:54px;transition:border-color .15s}
-.rc-control:hover .rc-pill{border-color:var(--text3)}
-.rc-pill-arrow{color:var(--text3);font-size:10px;line-height:1}
-.dropdown.dd-mini{left:auto;right:0;top:calc(100% + 4px);border:1px solid var(--border);border-radius:10px;min-width:150px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
-.dropdown.dd-mini .dropdown-item{padding:9px 14px;font-size:12px}
-.dropdown.dd-mini .dropdown-item:first-child{border-top:none}
+.rc-seg{display:inline-flex;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-family:var(--sans)}
+.rc-seg button{padding:5px 12px;font-size:12px;font-weight:700;color:var(--text2);background:transparent;border:none;border-left:1px solid var(--border);cursor:pointer;min-width:38px;letter-spacing:.3px;transition:background .15s,color .15s;font-family:inherit}
+.rc-seg button:first-child{border-left:none}
+.rc-seg button:hover:not(.active){background:var(--bg2);color:var(--text)}
+.rc-seg button.active{background:var(--bw);color:#fff}
 .recent-table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--mono)}
 .recent-table th,.recent-table td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border2);white-space:nowrap}
 .recent-table th{background:var(--bg2);font-weight:700;color:var(--text2);font-size:10px;letter-spacing:.5px;text-transform:uppercase}
@@ -522,7 +519,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
             <div id="dVPList"></div>
           </div>
         </div>
-        <div class="recent-header"><div class="section-title">Recent Cases</div><div class="rc-control" onclick="tDD('dRCDD')"><span class="rc-control-label">Show</span><span class="rc-pill"><span id="dRCV">10</span><span class="rc-pill-arrow">▾</span></span><div class="dropdown dd-mini" id="dRCDD"><div class="dropdown-item active" data-n="10" onclick="selDRC(10)">Last 10 cases</div><div class="dropdown-item" data-n="30" onclick="selDRC(30)">Last 30 cases</div><div class="dropdown-item" data-n="50" onclick="selDRC(50)">Last 50 cases</div></div></div></div>
+        <div class="recent-header"><div class="section-title">Recent Cases</div><div class="rc-seg" id="dRCSeg"><button class="active" data-n="10" title="Show last 10 cases" onclick="selDRC(10)">10</button><button data-n="30" title="Show last 30 cases" onclick="selDRC(30)">30</button><button data-n="50" title="Show last 50 cases" onclick="selDRC(50)">50</button></div></div>
         <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Physician</th><th>Type</th><th>CAS</th></tr></thead><tbody id="dRCBody"></tbody></table></div>
       </div>
       <div class="page-footer" id="footerH"></div>
@@ -552,7 +549,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           <div class="vari-row"><div class="vari-label">MTD</div><div class="vari-bar"><div class="vari-bar-fill" id="pdVMBar"></div><span class="vari-bar-pct" id="pdVMPct"></span></div><div class="vari-stat" id="pdVMStat"></div></div>
           <div class="vari-row"><div class="vari-label">YTD</div><div class="vari-bar"><div class="vari-bar-fill" id="pdVYBar"></div><span class="vari-bar-pct" id="pdVYPct"></span></div><div class="vari-stat" id="pdVYStat"></div></div>
         </div>
-        <div class="recent-header"><div class="section-title">Recent Cases</div><div class="rc-control" onclick="tDD('pdRCDD')"><span class="rc-control-label">Show</span><span class="rc-pill"><span id="pdRCV">10</span><span class="rc-pill-arrow">▾</span></span><div class="dropdown dd-mini" id="pdRCDD"><div class="dropdown-item active" data-n="10" onclick="selPDRC(10)">Last 10 cases</div><div class="dropdown-item" data-n="30" onclick="selPDRC(30)">Last 30 cases</div><div class="dropdown-item" data-n="50" onclick="selPDRC(50)">Last 50 cases</div></div></div></div>
+        <div class="recent-header"><div class="section-title">Recent Cases</div><div class="rc-seg" id="pdRCSeg"><button class="active" data-n="10" title="Show last 10 cases" onclick="selPDRC(10)">10</button><button data-n="30" title="Show last 30 cases" onclick="selPDRC(30)">30</button><button data-n="50" title="Show last 50 cases" onclick="selPDRC(50)">50</button></div></div>
         <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Hospital</th><th>Type</th><th>CAS</th></tr></thead><tbody id="pdRCBody"></tbody></table></div>
       </div>
       <div class="page-footer" id="footerP"></div>
@@ -797,7 +794,7 @@ function uDRecent(){
   const rows=all.slice(0,dRCLim);
   document.getElementById('dRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+r.physician_dr+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
-function selDRC(n){dRCLim=n;document.getElementById('dRCV').textContent=n;document.querySelectorAll('#dRCDD .dropdown-item').forEach(e=>e.classList.toggle('active',+e.dataset.n===n));uDRecent()}
+function selDRC(n){dRCLim=n;document.querySelectorAll('#dRCSeg button').forEach(e=>e.classList.toggle('active',+e.dataset.n===n));uDRecent()}
 function uDLine(){
   const cy=M.last_year,ly=cy-1,md=D.hospital_monthly.filter(x=>x.hospital===cH);
   const cyD=Array(12).fill(0),lyD=Array(12).fill(0);
@@ -900,7 +897,7 @@ function uPDRecent(){
   const rows=all.slice(0,pdRCLim);
   document.getElementById('pdRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+hAbbr(r.hospital)+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
-function selPDRC(n){pdRCLim=n;document.getElementById('pdRCV').textContent=n;document.querySelectorAll('#pdRCDD .dropdown-item').forEach(e=>e.classList.toggle('active',+e.dataset.n===n));uPDRecent()}
+function selPDRC(n){pdRCLim=n;document.querySelectorAll('#pdRCSeg button').forEach(e=>e.classList.toggle('active',+e.dataset.n===n));uPDRecent()}
 function uPDHComp(){
   const p=cPD,cy=M.last_year;
   const hosps=D.phys_hospitals.filter(x=>x.physician===p);
