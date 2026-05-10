@@ -160,11 +160,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 /* Recent cases */
 .recent-card{background:#fff;border:1px solid var(--border);border-radius:16px;margin-bottom:0;overflow:hidden}
 .recent-meta{font-family:var(--sans);font-size:11px;font-weight:500;color:var(--text3);margin-left:8px;letter-spacing:.2px}
-.recent-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:28px;margin-bottom:14px;flex-wrap:wrap}
-.recent-header .section-title{margin-top:0;margin-bottom:0}
-.recent-limit-select{font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text2);background:#fff;border:1px solid var(--border);border-radius:8px;padding:5px 26px 5px 10px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10' fill='none' stroke='%237a7466' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='2,4 5,7 8,4'/></svg>");background-repeat:no-repeat;background-position:right 9px center;letter-spacing:.2px;transition:border-color .15s,color .15s}
-.recent-limit-select:hover{border-color:var(--text3);color:var(--text)}
-.recent-limit-select:focus{border-color:#EB1700;color:var(--text)}
 .recent-table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--mono)}
 .recent-table th,.recent-table td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border2);white-space:nowrap}
 .recent-table th{background:var(--bg2);font-weight:700;color:var(--text2);font-size:10px;letter-spacing:.5px;text-transform:uppercase}
@@ -518,8 +513,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
             <div id="dVPList"></div>
           </div>
         </div>
-        <div class="recent-header"><div><div class="section-title">Recent Cases</div><span class="recent-meta" id="dRCMeta"></span></div><select class="recent-limit-select" id="dRCLimit" onchange="uDRecent()" aria-label="Number of recent cases"><option value="10">Last 10</option><option value="30">Last 30</option><option value="50">Last 50</option></select></div>
-        <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Physician</th><th>Type</th><th>CAS</th></tr></thead><tbody id="dRCBody"></tbody></table></div>
+        <div class="section-title">Recent Cases</div>
+        <div class="selector" id="dRCSel" onclick="tDD('dRCDD')"><div><div class="selector-label">Show</div><div class="selector-value" id="dRCV">Last 10 cases</div></div><div class="selector-arrow">▾</div><div class="dropdown" id="dRCDD"><div class="dropdown-item active" data-n="10" onclick="selDRC(10)">Last 10 cases</div><div class="dropdown-item" data-n="30" onclick="selDRC(30)">Last 30 cases</div><div class="dropdown-item" data-n="50" onclick="selDRC(50)">Last 50 cases</div></div></div>
+        <div class="recent-card" style="margin-top:14px"><table class="recent-table"><thead><tr><th>Date</th><th>Physician</th><th>Type</th><th>CAS</th></tr></thead><tbody id="dRCBody"></tbody></table></div>
       </div>
       <div class="page-footer" id="footerH"></div>
     </div>
@@ -548,8 +544,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           <div class="vari-row"><div class="vari-label">MTD</div><div class="vari-bar"><div class="vari-bar-fill" id="pdVMBar"></div><span class="vari-bar-pct" id="pdVMPct"></span></div><div class="vari-stat" id="pdVMStat"></div></div>
           <div class="vari-row"><div class="vari-label">YTD</div><div class="vari-bar"><div class="vari-bar-fill" id="pdVYBar"></div><span class="vari-bar-pct" id="pdVYPct"></span></div><div class="vari-stat" id="pdVYStat"></div></div>
         </div>
-        <div class="recent-header"><div><div class="section-title">Recent Cases</div><span class="recent-meta" id="pdRCMeta"></span></div><select class="recent-limit-select" id="pdRCLimit" onchange="uPDRecent()" aria-label="Number of recent cases"><option value="10">Last 10</option><option value="30">Last 30</option><option value="50">Last 50</option></select></div>
-        <div class="recent-card"><table class="recent-table"><thead><tr><th>Date</th><th>Hospital</th><th>Type</th><th>CAS</th></tr></thead><tbody id="pdRCBody"></tbody></table></div>
+        <div class="section-title">Recent Cases</div>
+        <div class="selector" id="pdRCSel" onclick="tDD('pdRCDD')"><div><div class="selector-label">Show</div><div class="selector-value" id="pdRCV">Last 10 cases</div></div><div class="selector-arrow">▾</div><div class="dropdown" id="pdRCDD"><div class="dropdown-item active" data-n="10" onclick="selPDRC(10)">Last 10 cases</div><div class="dropdown-item" data-n="30" onclick="selPDRC(30)">Last 30 cases</div><div class="dropdown-item" data-n="50" onclick="selPDRC(50)">Last 50 cases</div></div></div>
+        <div class="recent-card" style="margin-top:14px"><table class="recent-table"><thead><tr><th>Date</th><th>Hospital</th><th>Type</th><th>CAS</th></tr></thead><tbody id="pdRCBody"></tbody></table></div>
       </div>
       <div class="page-footer" id="footerP"></div>
     </div>
@@ -571,7 +568,7 @@ const PC=['#A01528','#EB1700','#F04D5E','#F48091','#F8A8B5','#FAC4CC','#FCDDE2',
 const PHC=['#1B395C','#234D79','#2C6097','#3573B5','#4786C9','#659AD1','#83AEDA','#A1C2E3','#BFD5EC','#DDE9F5'];
 const OTHERS_COLOR='#e8e5dc';
 function palWithOthers(pal,n,hasOthers){const out=pal.slice(0,n);if(hasOthers)out[n-1]=OTHERS_COLOR;return out}
-let cH=null,cPD=null,pdHTab='all';
+let cH=null,cPD=null,pdHTab='all',dRCLim=10,pdRCLim=10;
 let sRL=false,sDL=false,sPDL=false;
 let charts={};
 let rI=false,dI=false,pdI=false;
@@ -790,11 +787,10 @@ function renderRecent(rows,cols,extra){
 }
 function uDRecent(){
   const all=(D.recent_cases_by_hospital&&D.recent_cases_by_hospital[cH])||[];
-  const lim=parseInt(document.getElementById('dRCLimit').value,10)||10;
-  const rows=all.slice(0,lim);
-  document.getElementById('dRCMeta').textContent='(Last '+rows.length+' cases)';
+  const rows=all.slice(0,dRCLim);
   document.getElementById('dRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+r.physician_dr+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
+function selDRC(n){dRCLim=n;document.getElementById('dRCV').textContent='Last '+n+' cases';document.querySelectorAll('#dRCDD .dropdown-item').forEach(e=>e.classList.toggle('active',+e.dataset.n===n));uDRecent()}
 function uDLine(){
   const cy=M.last_year,ly=cy-1,md=D.hospital_monthly.filter(x=>x.hospital===cH);
   const cyD=Array(12).fill(0),lyD=Array(12).fill(0);
@@ -894,13 +890,10 @@ function updatePhysDet(){
 function uPDRecent(){
   const phys=(D.recent_cases_by_physician||{})[cPD]||{};
   const all=(pdHTab==='all'?phys.__all__:phys[pdHTab])||[];
-  const lim=parseInt(document.getElementById('pdRCLimit').value,10)||10;
-  const rows=all.slice(0,lim);
-  const multi=D.phys_hospitals.filter(x=>x.physician===cPD).length>1;
-  const scope=multi?(pdHTab==='all'?' · All':' · '+hAbbr(pdHTab)):'';
-  document.getElementById('pdRCMeta').textContent='(Last '+rows.length+' cases)'+scope;
+  const rows=all.slice(0,pdRCLim);
   document.getElementById('pdRCBody').innerHTML=renderRecent(rows,4,r=>'<td>'+hAbbr(r.hospital)+'</td><td>'+r.type+'</td><td>'+r.cas+'</td>');
 }
+function selPDRC(n){pdRCLim=n;document.getElementById('pdRCV').textContent='Last '+n+' cases';document.querySelectorAll('#pdRCDD .dropdown-item').forEach(e=>e.classList.toggle('active',+e.dataset.n===n));uPDRecent()}
 function uPDHComp(){
   const p=cPD,cy=M.last_year;
   const hosps=D.phys_hospitals.filter(x=>x.physician===p);
