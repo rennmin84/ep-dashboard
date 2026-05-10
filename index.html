@@ -198,23 +198,36 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .rc-chip:hover:not(.active){border-color:var(--text4);color:var(--text)}
 .rc-chip.active{background:rgba(235,23,0,.12);color:var(--bw);border-color:rgba(235,23,0,.4);font-weight:700}
 .vari-note{font-family:var(--sans);font-size:11px;font-style:italic;color:var(--text3);margin:-4px 0 10px;letter-spacing:.1px}
-.vari-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px 18px;margin-bottom:0}
-.vari-row{display:flex;align-items:center;gap:14px;margin-bottom:24px}
-.vari-row:last-child{margin-bottom:0}
-.vari-label{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--text2);width:42px;flex-shrink:0;letter-spacing:.4px}
-.vari-bar{flex:1;height:22px;background:#e8e5dc;border-radius:11px;position:relative}
-.vari-bar-fill{height:100%;background:var(--bw);border-radius:11px;width:0;transition:width .3s ease}
-.vari-bar-pct{position:absolute;top:50%;font-family:var(--mono);font-size:10.5px;font-weight:700;white-space:nowrap;pointer-events:none;line-height:1}
-.vari-stat{font-family:var(--mono);font-size:11px;color:var(--text3);font-variant-numeric:tabular-nums;width:90px;text-align:right;flex-shrink:0;line-height:1}
-.vari-stat .vari-num{font-size:20px;font-weight:700;color:var(--bw);margin-right:2px}
-.vari-stat.empty .vari-num{color:var(--text3)}
-@media (max-width:520px){.vari-label{width:38px;font-size:11px}.vari-stat{width:72px;font-size:10px}.vari-stat .vari-num{font-size:17px}.vari-hosp-label{width:88px!important;font-size:11px!important}}
-.vari-divider{height:1px;background:var(--border2);margin:18px -18px}
-.vari-subtitle{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
-.vari-hosp-label{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--text2);width:120px;flex-shrink:0;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vari-row-link{cursor:pointer;border-radius:8px;margin-left:-6px;margin-right:-6px;padding:0 6px;transition:background .15s}
+.vari-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 18px;margin-bottom:0}
+.vari-top{display:flex;gap:8px;padding:4px 0 8px}
+.vari-block{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
+.vari-block-label{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--text2);letter-spacing:.4px;margin-bottom:10px}
+.vari-donut{position:relative;width:104px;height:104px;margin-bottom:10px}
+.vari-donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.vari-donut-track{fill:none;stroke:#ede9df;stroke-width:3.5}
+.vari-donut-fill{fill:none;stroke:var(--bw);stroke-width:3.5;stroke-linecap:round;transition:stroke-dasharray .3s ease}
+.vari-donut-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:18px;font-weight:800;color:var(--bw);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.vari-donut-pct.empty{color:var(--text3)}
+.vari-block-stat{font-family:var(--mono);font-size:10px;color:var(--text3);font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.vari-block-stat .vari-num{font-size:14px;font-weight:700;color:var(--text2);margin-right:1px}
+.vari-block-stat.empty .vari-num{color:var(--text3)}
+.vari-divider{height:1px;background:var(--border2);margin:14px -18px 0}
+.vari-subtitle{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 4px}
+.vari-list{display:flex;flex-direction:column}
+.vari-row{display:grid;grid-template-columns:24px 96px 1fr auto auto;gap:12px;align-items:center;padding:14px 8px;border-bottom:1px solid var(--border2)}
+.vari-row:last-child{border-bottom:none}
+.vari-row-link{cursor:pointer;transition:background .15s}
 .vari-row-link:hover{background:var(--bg2)}
-.vari-row-link:hover .vari-hosp-label{color:var(--bw)}
+.vari-row-link:hover .vari-name{color:var(--bw)}
+.vari-rank{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text4)}
+.vari-row:nth-child(-n+3) .vari-rank{color:var(--text)}
+.vari-name{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vari-bar{height:5px;background:#ede9df;border-radius:3px;overflow:hidden}
+.vari-bar-fill{height:100%;background:var(--bw);border-radius:3px;transition:width .3s ease}
+.vari-pct{font-family:var(--mono);font-size:15px;font-weight:800;color:var(--bw);letter-spacing:-.2px;font-variant-numeric:tabular-nums;text-align:right;min-width:54px}
+.vari-rowstat{font-family:var(--mono);font-size:10px;color:var(--text3);font-variant-numeric:tabular-nums;text-align:right;min-width:48px}
+.vari-rowstat .vari-num{font-size:13px;font-weight:700;color:var(--text2);margin-right:1px}
+@media (max-width:520px){.vari-block-label{font-size:12px}.vari-donut{width:88px;height:88px}.vari-donut-pct{font-size:16px}.vari-row{grid-template-columns:20px 82px 1fr auto auto;gap:8px;padding:12px 6px}.vari-name{font-size:13px}.vari-pct{font-size:14px;min-width:48px}.vari-rowstat .vari-num{font-size:12px}}
 .phys-hospitals{font-family:var(--sans);font-size:16px;font-weight:500;color:var(--text2);padding-left:4px;letter-spacing:.2px;display:flex;align-items:center;gap:6px}
 .phys-hospitals svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .phys-hospitals:empty{display:none}
@@ -508,11 +521,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Varipulse Adoption Rate</div>
         <div class="vari-note">Within Carto-mapped AF: Varipulse vs. Farapulse.</div>
         <div class="vari-card">
-          <div class="vari-row"><div class="vari-label">MTD</div><div class="vari-bar"><div class="vari-bar-fill" id="rVMBar"></div><span class="vari-bar-pct" id="rVMPct"></span></div><div class="vari-stat" id="rVMStat"></div></div>
-          <div class="vari-row"><div class="vari-label">YTD</div><div class="vari-bar"><div class="vari-bar-fill" id="rVYBar"></div><span class="vari-bar-pct" id="rVYPct"></span></div><div class="vari-stat" id="rVYStat"></div></div>
+          <div class="vari-top">
+            <div class="vari-block"><div class="vari-block-label">MTD</div><div class="vari-donut"><svg viewBox="-4 -4 44 44"><circle class="vari-donut-track" cx="18" cy="18" r="15.915"/><circle class="vari-donut-fill" id="rVMFill" cx="18" cy="18" r="15.915" stroke-dasharray="0 100"/></svg><div class="vari-donut-pct" id="rVMPct">—</div></div><div class="vari-block-stat" id="rVMStat"></div></div>
+            <div class="vari-block"><div class="vari-block-label">YTD</div><div class="vari-donut"><svg viewBox="-4 -4 44 44"><circle class="vari-donut-track" cx="18" cy="18" r="15.915"/><circle class="vari-donut-fill" id="rVYFill" cx="18" cy="18" r="15.915" stroke-dasharray="0 100"/></svg><div class="vari-donut-pct" id="rVYPct">—</div></div><div class="vari-block-stat" id="rVYStat"></div></div>
+          </div>
           <div class="vari-divider"></div>
           <div class="vari-subtitle">By hospital · YTD</div>
-          <div id="rVHList"></div>
+          <div class="vari-list" id="rVHList"></div>
         </div>
         <div class="section-title">Hospital Ranking</div>
         <div class="hospital-cards-grid" id="rHCards"></div>
@@ -539,12 +554,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Varipulse Adoption Rate</div>
         <div class="vari-note">Within Carto-mapped AF: Varipulse vs. Farapulse.</div>
         <div class="vari-card">
-          <div class="vari-row"><div class="vari-label">MTD</div><div class="vari-bar"><div class="vari-bar-fill" id="dVMBar"></div><span class="vari-bar-pct" id="dVMPct"></span></div><div class="vari-stat" id="dVMStat"></div></div>
-          <div class="vari-row"><div class="vari-label">YTD</div><div class="vari-bar"><div class="vari-bar-fill" id="dVYBar"></div><span class="vari-bar-pct" id="dVYPct"></span></div><div class="vari-stat" id="dVYStat"></div></div>
+          <div class="vari-top">
+            <div class="vari-block"><div class="vari-block-label">MTD</div><div class="vari-donut"><svg viewBox="-4 -4 44 44"><circle class="vari-donut-track" cx="18" cy="18" r="15.915"/><circle class="vari-donut-fill" id="dVMFill" cx="18" cy="18" r="15.915" stroke-dasharray="0 100"/></svg><div class="vari-donut-pct" id="dVMPct">—</div></div><div class="vari-block-stat" id="dVMStat"></div></div>
+            <div class="vari-block"><div class="vari-block-label">YTD</div><div class="vari-donut"><svg viewBox="-4 -4 44 44"><circle class="vari-donut-track" cx="18" cy="18" r="15.915"/><circle class="vari-donut-fill" id="dVYFill" cx="18" cy="18" r="15.915" stroke-dasharray="0 100"/></svg><div class="vari-donut-pct" id="dVYPct">—</div></div><div class="vari-block-stat" id="dVYStat"></div></div>
+          </div>
           <div id="dVPSection" style="display:none">
             <div class="vari-divider"></div>
             <div class="vari-subtitle">Top adopters · YTD</div>
-            <div id="dVPList"></div>
+            <div class="vari-list" id="dVPList"></div>
           </div>
         </div>
         <div class="section-title">Recent Cases</div>
@@ -578,8 +595,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="section-title">Varipulse Adoption Rate</div><span class="recent-meta" id="pdVMeta"></span>
         <div class="vari-note">Within Carto-mapped AF: Varipulse vs. Farapulse.</div>
         <div class="vari-card">
-          <div class="vari-row"><div class="vari-label">MTD</div><div class="vari-bar"><div class="vari-bar-fill" id="pdVMBar"></div><span class="vari-bar-pct" id="pdVMPct"></span></div><div class="vari-stat" id="pdVMStat"></div></div>
-          <div class="vari-row"><div class="vari-label">YTD</div><div class="vari-bar"><div class="vari-bar-fill" id="pdVYBar"></div><span class="vari-bar-pct" id="pdVYPct"></span></div><div class="vari-stat" id="pdVYStat"></div></div>
+          <div class="vari-top">
+            <div class="vari-block"><div class="vari-block-label">MTD</div><div class="vari-donut"><svg viewBox="-4 -4 44 44"><circle class="vari-donut-track" cx="18" cy="18" r="15.915"/><circle class="vari-donut-fill" id="pdVMFill" cx="18" cy="18" r="15.915" stroke-dasharray="0 100"/></svg><div class="vari-donut-pct" id="pdVMPct">—</div></div><div class="vari-block-stat" id="pdVMStat"></div></div>
+            <div class="vari-block"><div class="vari-block-label">YTD</div><div class="vari-donut"><svg viewBox="-4 -4 44 44"><circle class="vari-donut-track" cx="18" cy="18" r="15.915"/><circle class="vari-donut-fill" id="pdVYFill" cx="18" cy="18" r="15.915" stroke-dasharray="0 100"/></svg><div class="vari-donut-pct" id="pdVYPct">—</div></div><div class="vari-block-stat" id="pdVYStat"></div></div>
+          </div>
         </div>
         <div class="section-title">Recent Cases</div>
         <div class="rc-filters">
@@ -684,20 +703,21 @@ function initRegion(){
 }
 function uRVari(){
   const v=D.varipulse_adoption_region||{mtd:{af:0,varipulse:0},ytd:{af:0,varipulse:0}};
-  renderVariRow('rVMBar','rVMPct','rVMStat',v.mtd.af,v.mtd.varipulse);
-  renderVariRow('rVYBar','rVYPct','rVYStat',v.ytd.af,v.ytd.varipulse);
+  renderVariDonut('rVMFill','rVMPct','rVMStat',v.mtd.af,v.mtd.varipulse);
+  renderVariDonut('rVYFill','rVYPct','rVYStat',v.ytd.af,v.ytd.varipulse);
   const rows=Object.entries(D.varipulse_adoption||{})
-    .map(([h,e])=>({h:h,af:e.ytd.af,vp:e.ytd.varipulse,pct:e.ytd.af>0?e.ytd.varipulse/e.ytd.af*100:-1}))
+    .map(([h,e])=>({h:h,af:e.ytd.af,vp:e.ytd.varipulse,pct:e.ytd.af>0?e.ytd.varipulse/e.ytd.af*100:0}))
     .filter(r=>r.af>0)
-    .sort((a,b)=>b.pct-a.pct);
+    .sort((a,b)=>b.vp-a.vp||b.pct-a.pct);
   document.getElementById('rVHList').innerHTML=rows.map((r,i)=>(
     '<div class="vari-row vari-row-link" data-hosp="'+r.h+'">'
-    +'<div class="vari-hosp-label" title="'+tc(r.h)+'">'+hAbbr(r.h)+'</div>'
-    +'<div class="vari-bar"><div class="vari-bar-fill" id="rVH'+i+'Bar"></div><span class="vari-bar-pct" id="rVH'+i+'Pct"></span></div>'
-    +'<div class="vari-stat" id="rVH'+i+'Stat"></div>'
+    +'<div class="vari-rank">'+(i<9?'0':'')+(i+1)+'</div>'
+    +'<div class="vari-name" title="'+tc(r.h)+'">'+hAbbr(r.h)+'</div>'
+    +'<div class="vari-bar"><div class="vari-bar-fill" style="width:'+r.pct.toFixed(2)+'%"></div></div>'
+    +'<div class="vari-pct">'+r.pct.toFixed(1)+'%</div>'
+    +'<div class="vari-rowstat"><span class="vari-num">'+r.vp+'</span> / '+r.af+'</div>'
     +'</div>'
   )).join('');
-  rows.forEach((r,i)=>renderVariRow('rVH'+i+'Bar','rVH'+i+'Pct','rVH'+i+'Stat',r.af,r.vp));
   document.getElementById('rVHList').onclick=function(e){var r=e.target.closest('[data-hosp]');if(r&&r.dataset.hosp)goH(r.dataset.hosp)};
 }
 function uRL(){
@@ -774,36 +794,25 @@ function updateDetail(){
   document.getElementById('dMD').innerHTML=bd(mc,ml);document.getElementById('dYD').innerHTML=bd(yc,yl);
   uDLine();uDProc();uDPhysMix();uDVari();uDRecent();
 }
-function renderVariRow(barId,pctId,statId,af,vp){
-  const bar=document.getElementById(barId),pctEl=document.getElementById(pctId),stat=document.getElementById(statId);
+function renderVariDonut(fillId,pctId,statId,af,vp){
+  const fill=document.getElementById(fillId),pctEl=document.getElementById(pctId),stat=document.getElementById(statId);
   if(af===0){
-    bar.style.width='0%';
-    pctEl.textContent='—';pctEl.style.left='10px';pctEl.style.transform='translateY(-50%)';pctEl.style.color='var(--text3)';pctEl.style.padding='0';
-    stat.className='vari-stat empty';stat.innerHTML='<span class="vari-num">0</span>/ 0';
+    fill.setAttribute('stroke-dasharray','0 100');
+    pctEl.textContent='—';pctEl.classList.add('empty');
+    stat.className='vari-block-stat empty';stat.innerHTML='<span class="vari-num">0</span> / 0';
     return;
   }
   const pct=vp/af*100;
-  bar.style.width=pct.toFixed(2)+'%';
-  pctEl.textContent=pct.toFixed(1)+'%';
-  if(pct>=18){
-    pctEl.style.left=pct.toFixed(2)+'%';
-    pctEl.style.transform='translate(-100%,-50%)';
-    pctEl.style.padding='0 8px 0 0';
-    pctEl.style.color='#fff';
-  }else{
-    pctEl.style.left=pct.toFixed(2)+'%';
-    pctEl.style.transform='translateY(-50%)';
-    pctEl.style.padding='0 0 0 6px';
-    pctEl.style.color='var(--text2)';
-  }
-  stat.className='vari-stat';stat.innerHTML='<span class="vari-num">'+vp+'</span>/ '+af;
+  fill.setAttribute('stroke-dasharray',pct.toFixed(2)+' 100');
+  pctEl.textContent=pct.toFixed(1)+'%';pctEl.classList.remove('empty');
+  stat.className='vari-block-stat';stat.innerHTML='<span class="vari-num">'+vp+'</span> / '+af;
 }
 function uDVari(){
   const v=(D.varipulse_adoption||{})[cH]||{mtd:{af:0,varipulse:0},ytd:{af:0,varipulse:0}};
-  renderVariRow('dVMBar','dVMPct','dVMStat',v.mtd.af,v.mtd.varipulse);
-  renderVariRow('dVYBar','dVYPct','dVYStat',v.ytd.af,v.ytd.varipulse);
+  renderVariDonut('dVMFill','dVMPct','dVMStat',v.mtd.af,v.mtd.varipulse);
+  renderVariDonut('dVYFill','dVYPct','dVYStat',v.ytd.af,v.ytd.varipulse);
   const phys=Object.entries(D.varipulse_adoption_phys||{})
-    .map(([p,e])=>{const h=e[cH];if(!h)return null;return{p:p,af:h.ytd.af,vp:h.ytd.varipulse,pct:h.ytd.af>0?h.ytd.varipulse/h.ytd.af*100:-1}})
+    .map(([p,e])=>{const h=e[cH];if(!h)return null;return{p:p,af:h.ytd.af,vp:h.ytd.varipulse,pct:h.ytd.af>0?h.ytd.varipulse/h.ytd.af*100:0}})
     .filter(r=>r&&r.vp>=1)
     .sort((a,b)=>b.vp-a.vp||b.pct-a.pct)
     .slice(0,5);
@@ -812,20 +821,21 @@ function uDVari(){
   if(phys.length===0)return;
   document.getElementById('dVPList').innerHTML=phys.map((r,i)=>(
     '<div class="vari-row vari-row-link" data-phys="'+r.p+'">'
-    +'<div class="vari-hosp-label" title="'+r.p+'">Dr. '+r.p.split(' ').slice(-1)[0]+'</div>'
-    +'<div class="vari-bar"><div class="vari-bar-fill" id="dVP'+i+'Bar"></div><span class="vari-bar-pct" id="dVP'+i+'Pct"></span></div>'
-    +'<div class="vari-stat" id="dVP'+i+'Stat"></div>'
+    +'<div class="vari-rank">'+(i<9?'0':'')+(i+1)+'</div>'
+    +'<div class="vari-name" title="'+r.p+'">Dr. '+r.p.split(' ').slice(-1)[0]+'</div>'
+    +'<div class="vari-bar"><div class="vari-bar-fill" style="width:'+r.pct.toFixed(2)+'%"></div></div>'
+    +'<div class="vari-pct">'+r.pct.toFixed(1)+'%</div>'
+    +'<div class="vari-rowstat"><span class="vari-num">'+r.vp+'</span> / '+r.af+'</div>'
     +'</div>'
   )).join('');
-  phys.forEach((r,i)=>renderVariRow('dVP'+i+'Bar','dVP'+i+'Pct','dVP'+i+'Stat',r.af,r.vp));
   document.getElementById('dVPList').onclick=function(e){var r=e.target.closest('[data-phys]');if(r&&r.dataset.phys)goPD(r.dataset.phys)};
 }
 function uPDVari(){
   const phys=(D.varipulse_adoption_phys||{})[cPD]||{};
   const key=pdHTab==='all'?'__all__':pdHTab;
   const v=phys[key]||{mtd:{af:0,varipulse:0},ytd:{af:0,varipulse:0}};
-  renderVariRow('pdVMBar','pdVMPct','pdVMStat',v.mtd.af,v.mtd.varipulse);
-  renderVariRow('pdVYBar','pdVYPct','pdVYStat',v.ytd.af,v.ytd.varipulse);
+  renderVariDonut('pdVMFill','pdVMPct','pdVMStat',v.mtd.af,v.mtd.varipulse);
+  renderVariDonut('pdVYFill','pdVYPct','pdVYStat',v.ytd.af,v.ytd.varipulse);
 }
 function renderRecent(rows,cols,extra){
   if(!rows.length)return '<tr><td colspan="'+cols+'" class="recent-empty">No recent cases</td></tr>';
