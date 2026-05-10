@@ -128,6 +128,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .phys-name{font-size:14px;font-weight:600;color:var(--text)}.phys-count{font-family:var(--mono);font-size:13px;font-weight:700;min-width:32px;text-align:right;color:var(--text)}
 .phys-delta{font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;font-family:var(--mono);min-width:38px;text-align:center}
 .phys-delta.up{background:var(--green-bg);color:var(--green)}.phys-delta.down{background:var(--red-bg);color:var(--red)}.phys-delta.new{background:var(--gold-bg);color:var(--gold)}
+.dph-list{display:flex;flex-direction:column}
+.dph-row{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:center;padding:12px 8px;border-bottom:1px solid var(--border2);cursor:pointer;transition:background .15s}
+.dph-row:hover{background:var(--bg2)}.dph-row:last-child{border-bottom:none}
+.dph-row.dph-others{cursor:default}.dph-row.dph-others:hover{background:transparent}
+.dph-rank{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text4)}.dph-row:nth-child(-n+3) .dph-rank{color:var(--text)}
+.dph-row.dph-others .dph-rank{color:var(--text4)}
+.dph-main{display:flex;flex-direction:column;gap:6px;min-width:0}
+.dph-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.dph-name{font-size:14px;font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dph-meta{font-family:var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+.dph-count{font-size:13px;font-weight:700;color:var(--text)}
+.dph-pct{font-size:11px;font-weight:600;color:var(--text3);margin-left:8px}
+.dph-bar{height:4px;background:var(--border2);border-radius:2px;overflow:hidden}
+.dph-bar-fill{height:100%;background:var(--bw);border-radius:2px}
 
 /* Physician Detail: hospital filter strip */
 .hosp-filter-strip{display:flex;align-items:center;gap:8px;margin-top:32px;padding:10px 12px;background:var(--bg2);border-radius:12px;border:1px solid var(--border);position:relative}
@@ -504,10 +518,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">MTD</div><div class="kpi-value" id="dMV">0</div><div id="dMD"></div><div class="kpi-period" id="dMP"></div></div><div class="kpi-card"><div class="kpi-label">YTD</div><div class="kpi-value" id="dYV">0</div><div id="dYD"></div><div class="kpi-period" id="dYP"></div></div></div>
         <div class="section-title">Monthly Volume</div>
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dLS"></div></div><button class="py-tg" id="dLT" onclick="tDL()"></button></div><div class="chart-wrap"><canvas id="dLC"></canvas></div><div class="legend"><div class="legend-item"><div class="legend-line"></div><span id="dCY"></span></div><div class="legend-item" id="dLI" style="display:none"><div class="legend-line dashed"></div><span id="dLY2"></span></div></div></div>
-        <div class="chart-row">
-        <div class="chart-pair"><div class="section-title">Procedure Type</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPS"></div></div></div><div class="proc-mix-wrap"><div class="proc-donut-wrap"><canvas id="dPC"></canvas></div><div class="proc-list" id="dPL"></div></div></div></div>
-        <div class="chart-pair"><div class="section-title">Top Physicians</div><div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPMS"></div></div><div class="interactive-hint-tag">Tap a slice to open physician</div></div><div class="chart-wrap" style="height:200px;flex:none"><canvas id="dPhC"></canvas></div></div></div>
-        </div>
+        <div class="section-title">Procedure Type</div>
+        <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPS"></div></div></div><div class="proc-mix-wrap"><div class="proc-donut-wrap"><canvas id="dPC"></canvas></div><div class="proc-list" id="dPL"></div></div></div>
+        <div class="section-title">Top Physicians</div>
+        <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="dPMS"></div></div><div class="interactive-hint-tag">Tap a row to open physician</div></div><div class="dph-list" id="dPhL"></div></div>
         <div class="section-title">Varipulse Adoption Rate</div>
         <div class="vari-note">Within Carto-mapped AF: Varipulse vs. Farapulse.</div>
         <div class="vari-card">
@@ -850,10 +864,23 @@ function uDProc(){
 function gPF(h){return D.hospital_physician_ytd.filter(x=>x.hospital===h).sort((a,b)=>b.count-a.count)}
 function uDPhysMix(){
   const all=gPF(cH);
-  const fd=foldN(all,'physician',10);
-  const fdLabels=fd.labels.map((l,i)=>fd.hasOthers&&i===fd.labels.length-1?l:shortPhys(l));
-  document.getElementById('dPMS').textContent=(fd.hasOthers?'Top 10 + Others':'All '+all.length+' physicians')+' · YTD '+M.last_year;
-  mkC('dPhC','doughnut',{data:{labels:fdLabels,datasets:[{data:fd.values,backgroundColor:palWithOthers(PHC,fd.labels.length,fd.hasOthers),borderWidth:2,borderColor:'#fff',hoverOffset:8}]},options:{...doo(),onClick:(e,els)=>{if(els.length>0){const n=fd.labels[els[0].index];if(!n.startsWith('Others'))goPD(n)}}}});
+  const total=all.reduce((s,x)=>s+x.count,0);
+  const top=all.slice(0,10);
+  const rest=all.slice(10);
+  const hasOthers=rest.length>0;
+  document.getElementById('dPMS').textContent=(hasOthers?'Top 10 + Others':'All '+all.length+' physicians')+' · YTD '+M.last_year;
+  let rows=top.map((p,i)=>{
+    const pct=total>0?(p.count/total*100).toFixed(1):'0.0';
+    return '<div class="dph-row" data-phys="'+p.physician+'"><div class="dph-rank">'+(i<9?'0':'')+(i+1)+'</div><div class="dph-main"><div class="dph-top"><span class="dph-name">'+p.physician+'</span><span class="dph-meta"><span class="dph-count">'+p.count+'</span><span class="dph-pct">'+pct+'%</span></span></div><div class="dph-bar"><div class="dph-bar-fill" style="width:'+pct+'%"></div></div></div></div>';
+  }).join('');
+  if(hasOthers){
+    const oc=rest.reduce((s,x)=>s+x.count,0);
+    const opct=total>0?(oc/total*100).toFixed(1):'0.0';
+    rows+='<div class="dph-row dph-others"><div class="dph-rank">—</div><div class="dph-main"><div class="dph-top"><span class="dph-name" style="color:var(--text3)">Others ('+rest.length+' physicians)</span><span class="dph-meta"><span class="dph-count">'+oc+'</span><span class="dph-pct">'+opct+'%</span></span></div><div class="dph-bar"><div class="dph-bar-fill" style="width:'+opct+'%;background:var(--text4)"></div></div></div></div>';
+  }
+  const el=document.getElementById('dPhL');
+  el.innerHTML=rows;
+  el.onclick=function(e){var r=e.target.closest('.dph-row');if(r&&!r.classList.contains('dph-others')&&r.dataset.phys)goPD(r.dataset.phys)};
 }
 
 // ============ PHYSICIAN DETAIL ============
