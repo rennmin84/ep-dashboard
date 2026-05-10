@@ -140,6 +140,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .hosp-tabs{display:flex;gap:4px;flex:1}
 .hosp-tab{flex:1;padding:7px 4px;text-align:center;font-size:11px;font-weight:600;color:var(--text2);border-radius:6px;cursor:pointer;transition:all .2s;border:1.5px solid var(--border);background:#fff;font-family:var(--sans)}
 .hosp-tab.active{background:rgba(235,23,0,.08);color:var(--bw);border:1.5px solid var(--bw);box-shadow:none}
+.hosp-filter-note{font-family:var(--sans);font-size:11px;font-style:italic;color:var(--text3);margin-top:8px;padding:0 4px;letter-spacing:.1px}
 
 /* Page footer */
 .page-footer{margin-top:40px;padding:16px 40px 20px;border-top:1px solid var(--border);font-size:10px;color:var(--text4);line-height:1.6;text-align:center;letter-spacing:.2px}
@@ -803,7 +804,7 @@ function buildPDTabs(){
   const hosps=D.phys_hospitals.filter(x=>x.physician===cPD);
   const el=document.getElementById('pdTabs');
   if(hosps.length<=1){el.innerHTML='';return}
-  el.innerHTML='<div class="hosp-filter-strip"><div class="hosp-filter-label"><svg viewBox="0 0 24 24"><path d="M3 6h18M7 12h10M10 18h4"/></svg>Viewing</div><div class="hosp-tabs"><button class="hosp-tab active" data-ht="all">All</button>'+hosps.map(h=>'<button class="hosp-tab" data-ht="'+h.hospital+'">'+hAbbr(h.hospital)+'</button>').join('')+'</div></div>';
+  el.innerHTML='<div class="hosp-filter-strip"><div class="hosp-filter-label"><svg viewBox="0 0 24 24"><path d="M3 6h18M7 12h10M10 18h4"/></svg>Viewing</div><div class="hosp-tabs"><button class="hosp-tab active" data-ht="all">All</button>'+hosps.map(h=>'<button class="hosp-tab" data-ht="'+h.hospital+'">'+hAbbr(h.hospital)+'</button>').join('')+'</div></div><div class="hosp-filter-note">Tap a tab to filter all charts below by hospital.</div>';
   el.onclick=function(e){var btn=e.target.closest('.hosp-tab');if(btn&&btn.dataset.ht){pdHTab=btn.dataset.ht==='all'?'all':btn.dataset.ht;updatePhysDet();el.querySelectorAll('.hosp-tab').forEach(t=>t.classList.toggle('active',t.dataset.ht===pdHTab))}};
 }
 function updatePhysDet(){
