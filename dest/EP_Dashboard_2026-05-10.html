@@ -198,20 +198,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .rc-chip:hover:not(.active){border-color:var(--text4);color:var(--text)}
 .rc-chip.active{background:rgba(235,23,0,.12);color:var(--bw);border-color:rgba(235,23,0,.4);font-weight:700}
 .vari-note{font-family:var(--sans);font-size:11px;font-style:italic;color:var(--text3);margin:-4px 0 10px;letter-spacing:.1px}
-.vari-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 18px;margin-bottom:0}
-.vari-top{display:flex;gap:8px;padding:4px 0 8px}
+.vari-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 14px;margin-bottom:0}
+.vari-top{display:flex;gap:8px}
 .vari-block{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
-.vari-block-label{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--text2);letter-spacing:.4px;margin-bottom:10px}
-.vari-donut{position:relative;width:104px;height:104px;margin-bottom:10px}
+.vari-block-label{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--text2);letter-spacing:.4px;margin-bottom:4px}
+.vari-donut{position:relative;width:128px;height:128px;margin-bottom:6px}
 .vari-donut svg{width:100%;height:100%;transform:rotate(-90deg)}
-.vari-donut-track{fill:none;stroke:#ede9df;stroke-width:3.5}
-.vari-donut-fill{fill:none;stroke:var(--bw);stroke-width:3.5;stroke-linecap:round;transition:stroke-dasharray .3s ease}
-.vari-donut-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:18px;font-weight:800;color:var(--bw);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.vari-donut-track{fill:none;stroke:#ede9df;stroke-width:4}
+.vari-donut-fill{fill:none;stroke:var(--bw);stroke-width:4;stroke-linecap:round;transition:stroke-dasharray .3s ease}
+.vari-donut-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:20px;font-weight:800;color:var(--bw);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
 .vari-donut-pct.empty{color:var(--text3)}
 .vari-block-stat{font-family:var(--mono);font-size:10px;color:var(--text3);font-variant-numeric:tabular-nums;letter-spacing:.2px}
 .vari-block-stat .vari-num{font-size:14px;font-weight:700;color:var(--text2);margin-right:1px}
 .vari-block-stat.empty .vari-num{color:var(--text3)}
-.vari-divider{height:1px;background:var(--border2);margin:14px -18px 0}
+.vari-divider{height:1px;background:var(--border2);margin:14px -14px 0}
 .vari-subtitle{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 4px}
 .vari-list{display:flex;flex-direction:column}
 .vari-row{display:grid;grid-template-columns:24px 96px 1fr auto auto;gap:12px;align-items:center;padding:14px 8px;border-bottom:1px solid var(--border2)}
@@ -227,7 +227,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .vari-pct{font-family:var(--mono);font-size:15px;font-weight:800;color:var(--bw);letter-spacing:-.2px;font-variant-numeric:tabular-nums;text-align:right;min-width:54px}
 .vari-rowstat{font-family:var(--mono);font-size:10px;color:var(--text3);font-variant-numeric:tabular-nums;text-align:right;min-width:48px}
 .vari-rowstat .vari-num{font-size:13px;font-weight:700;color:var(--text2);margin-right:1px}
-@media (max-width:520px){.vari-block-label{font-size:12px}.vari-donut{width:88px;height:88px}.vari-donut-pct{font-size:16px}.vari-row{grid-template-columns:20px 82px 1fr auto auto;gap:8px;padding:12px 6px}.vari-name{font-size:13px}.vari-pct{font-size:14px;min-width:48px}.vari-rowstat .vari-num{font-size:12px}}
+@media (max-width:520px){.vari-block-label{font-size:12px}.vari-donut{width:108px;height:108px}.vari-donut-pct{font-size:18px}.vari-row{grid-template-columns:20px 82px 1fr auto auto;gap:8px;padding:12px 6px}.vari-name{font-size:13px}.vari-pct{font-size:14px;min-width:48px}.vari-rowstat .vari-num{font-size:12px}}
 .phys-hospitals{font-family:var(--sans);font-size:16px;font-weight:500;color:var(--text2);padding-left:4px;letter-spacing:.2px;display:flex;align-items:center;gap:6px}
 .phys-hospitals svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .phys-hospitals:empty{display:none}
