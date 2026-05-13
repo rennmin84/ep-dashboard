@@ -213,6 +213,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .vari-block-stat.empty .vari-num{color:var(--text3)}
 .vari-divider{height:1px;background:var(--border2);margin:14px -14px 0}
 .vari-subtitle{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 4px}
+.vari-subtitle-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:14px 0 4px}
+.vari-subtitle-row .vari-subtitle{margin:0}
+.vari-sort{display:inline-flex;gap:1px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:2px}
+.vari-sort-btn{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--text3);background:transparent;border:none;padding:3px 9px;border-radius:6px;cursor:pointer;letter-spacing:.4px;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.vari-sort-btn.active{background:#fff;color:var(--bw);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.vari-sort-btn:hover:not(.active){color:var(--text)}
 .vari-list{display:flex;flex-direction:column}
 .vari-row{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:center;padding:12px 8px;border-bottom:1px solid var(--border2)}
 .vari-row:last-child{border-bottom:none}
@@ -530,7 +536,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
             <div class="vari-block"><div class="vari-block-label">YTD</div><div class="vari-donut"><svg viewBox="-4 -4 44 44"><circle class="vari-donut-track" cx="18" cy="18" r="15.915"/><circle class="vari-donut-fill" id="rVYFill" cx="18" cy="18" r="15.915" stroke-dasharray="0 100"/></svg><div class="vari-donut-pct" id="rVYPct">—</div></div><div class="vari-block-stat" id="rVYStat"></div></div>
           </div>
           <div class="vari-divider"></div>
-          <div class="vari-subtitle">By hospital · YTD</div>
+          <div class="vari-subtitle-row"><div class="vari-subtitle">By hospital · YTD</div><div class="vari-sort" id="rVSort"><button class="vari-sort-btn active" data-v="rate" onclick="sRVS('rate')">Rate</button><button class="vari-sort-btn" data-v="count" onclick="sRVS('count')">Count</button></div></div>
           <div class="vari-list" id="rVHList"></div>
         </div>
         <div class="section-title">Hospital Ranking</div>
@@ -564,7 +570,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           </div>
           <div id="dVPSection" style="display:none">
             <div class="vari-divider"></div>
-            <div class="vari-subtitle">Top adopters · YTD</div>
+            <div class="vari-subtitle-row"><div class="vari-subtitle">Top adopters · YTD</div><div class="vari-sort" id="dVSort"><button class="vari-sort-btn active" data-v="rate" onclick="sDVS('rate')">Rate</button><button class="vari-sort-btn" data-v="count" onclick="sDVS('count')">Count</button></div></div>
             <div class="vari-list" id="dVPList"></div>
           </div>
         </div>
@@ -635,6 +641,9 @@ let cH=null,cPD=null,pdHTab='all';
 let dRCType='all',dRCTech='all',pdRCType='all',pdRCTech='all';
 const TYPE_GROUPS={AF:['AF','Con. AF'],VT:['PVC','VT'],SVT:['WPW','AVNRT']};
 let sRL=true,sDL=true,sPDL=true;
+let rVSort='rate',dVSort='rate';
+function sRVS(s){if(rVSort===s)return;rVSort=s;document.querySelectorAll('#rVSort .vari-sort-btn').forEach(b=>b.classList.toggle('active',b.dataset.v===s));uRVari()}
+function sDVS(s){if(dVSort===s)return;dVSort=s;document.querySelectorAll('#dVSort .vari-sort-btn').forEach(b=>b.classList.toggle('active',b.dataset.v===s));uDVari()}
 let charts={};
 let rI=false,dI=false,pdI=false;
 const VER='v1.7';
@@ -712,7 +721,7 @@ function uRVari(){
   const rows=Object.entries(D.varipulse_adoption||{})
     .map(([h,e])=>({h:h,af:e.ytd.af,vp:e.ytd.varipulse,pct:e.ytd.af>0?e.ytd.varipulse/e.ytd.af*100:0}))
     .filter(r=>r.af>0)
-    .sort((a,b)=>b.vp-a.vp||b.pct-a.pct);
+    .sort((a,b)=>rVSort==='count'?(b.vp-a.vp||b.pct-a.pct):(b.pct-a.pct||b.vp-a.vp));
   document.getElementById('rVHList').innerHTML=rows.map((r,i)=>(
     '<div class="vari-row vari-row-link" data-hosp="'+r.h+'">'
     +'<div class="vari-rank">'+(i<9?'0':'')+(i+1)+'</div>'
@@ -815,7 +824,7 @@ function uDVari(){
   const phys=Object.entries(D.varipulse_adoption_phys||{})
     .map(([p,e])=>{const h=e[cH];if(!h)return null;return{p:p,af:h.ytd.af,vp:h.ytd.varipulse,pct:h.ytd.af>0?h.ytd.varipulse/h.ytd.af*100:0}})
     .filter(r=>r&&r.vp>=1)
-    .sort((a,b)=>b.vp-a.vp||b.pct-a.pct)
+    .sort((a,b)=>dVSort==='count'?(b.vp-a.vp||b.pct-a.pct):(b.pct-a.pct||b.vp-a.vp))
     .slice(0,5);
   const section=document.getElementById('dVPSection');
   section.style.display=phys.length>0?'block':'none';
