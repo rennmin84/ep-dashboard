@@ -149,7 +149,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .dph-name{font-size:14px;font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dph-meta{font-family:var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
 .dph-count{font-size:13px;font-weight:700;color:var(--text)}
-.dph-pct{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap}
+.dph-pct{font-size:13px;font-weight:700;color:var(--bw);white-space:nowrap}
 .dph-pct::before{content:"\00b7";color:var(--text3);font-weight:400;margin:0 5px}
 .dph-bar{height:4px;background:var(--border2);border-radius:2px;overflow:hidden}
 .dph-bar-fill{height:100%;background:var(--bw);border-radius:2px}
@@ -214,20 +214,24 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .vari-divider{height:1px;background:var(--border2);margin:14px -14px 0}
 .vari-subtitle{font-family:var(--sans);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 4px}
 .vari-list{display:flex;flex-direction:column}
-.vari-row{display:grid;grid-template-columns:24px 96px 1fr auto auto;gap:12px;align-items:center;padding:14px 8px;border-bottom:1px solid var(--border2)}
+.vari-row{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:center;padding:12px 8px;border-bottom:1px solid var(--border2)}
 .vari-row:last-child{border-bottom:none}
 .vari-row-link{cursor:pointer;transition:background .15s}
 .vari-row-link:hover{background:var(--bg2)}
 .vari-row-link:hover .vari-name{color:var(--bw)}
 .vari-rank{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text4)}
 .vari-row:nth-child(-n+3) .vari-rank{color:var(--text)}
-.vari-name{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vari-bar{height:5px;background:#ede9df;border-radius:3px;overflow:hidden}
-.vari-bar-fill{height:100%;background:var(--bw);border-radius:3px;transition:width .3s ease}
-.vari-pct{font-family:var(--mono);font-size:15px;font-weight:800;color:var(--bw);letter-spacing:-.2px;font-variant-numeric:tabular-nums;text-align:right;min-width:54px}
-.vari-rowstat{font-family:var(--mono);font-size:10px;color:var(--text3);font-variant-numeric:tabular-nums;text-align:right;min-width:48px}
-.vari-rowstat .vari-num{font-size:13px;font-weight:700;color:var(--text2);margin-right:1px}
-@media (max-width:520px){.vari-block-label{font-size:12px}.vari-donut{width:108px;height:108px}.vari-donut-pct{font-size:18px}.vari-row{grid-template-columns:20px 82px 1fr auto auto;gap:8px;padding:12px 6px}.vari-name{font-size:13px}.vari-pct{font-size:14px;min-width:48px}.vari-rowstat .vari-num{font-size:12px}}
+.vari-main{display:flex;flex-direction:column;gap:6px;min-width:0}
+.vari-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.vari-name{font-size:14px;font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vari-meta{font-family:var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums;display:flex;align-items:baseline}
+.vari-rowstat{font-size:11px;color:var(--text3)}
+.vari-rowstat .vari-num{font-size:12px;font-weight:700;color:var(--text2);margin-right:1px}
+.vari-pct{font-size:13px;font-weight:800;color:var(--bw);letter-spacing:-.2px;white-space:nowrap}
+.vari-pct::before{content:"\00b7";color:var(--text3);font-weight:400;margin:0 5px}
+.vari-bar{height:4px;background:#ede9df;border-radius:2px;overflow:hidden}
+.vari-bar-fill{height:100%;background:var(--bw);border-radius:2px;transition:width .3s ease}
+@media (max-width:520px){.vari-block-label{font-size:12px}.vari-donut{width:108px;height:108px}.vari-donut-pct{font-size:18px}.vari-row{grid-template-columns:20px 1fr;gap:8px;padding:10px 6px}.vari-name{font-size:13px}.vari-pct{font-size:12px}.vari-rowstat{font-size:10px}.vari-rowstat .vari-num{font-size:11px}}
 .phys-hospitals{font-family:var(--sans);font-size:16px;font-weight:500;color:var(--text2);padding-left:4px;letter-spacing:.2px;display:flex;align-items:center;gap:6px}
 .phys-hospitals svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .phys-hospitals:empty{display:none}
@@ -712,10 +716,7 @@ function uRVari(){
   document.getElementById('rVHList').innerHTML=rows.map((r,i)=>(
     '<div class="vari-row vari-row-link" data-hosp="'+r.h+'">'
     +'<div class="vari-rank">'+(i<9?'0':'')+(i+1)+'</div>'
-    +'<div class="vari-name" title="'+tc(r.h)+'">'+hAbbr(r.h)+'</div>'
-    +'<div class="vari-bar"><div class="vari-bar-fill" style="width:'+r.pct.toFixed(2)+'%"></div></div>'
-    +'<div class="vari-pct">'+r.pct.toFixed(1)+'%</div>'
-    +'<div class="vari-rowstat"><span class="vari-num">'+r.vp+'</span> / '+r.af+'</div>'
+    +'<div class="vari-main"><div class="vari-top"><span class="vari-name" title="'+tc(r.h)+'">'+hAbbr(r.h)+'</span><span class="vari-meta"><span class="vari-rowstat"><span class="vari-num">'+r.vp+'</span> / '+r.af+'</span><span class="vari-pct">'+r.pct.toFixed(1)+'%</span></span></div><div class="vari-bar"><div class="vari-bar-fill" style="width:'+r.pct.toFixed(2)+'%"></div></div></div>'
     +'</div>'
   )).join('');
   document.getElementById('rVHList').onclick=function(e){var r=e.target.closest('[data-hosp]');if(r&&r.dataset.hosp)goH(r.dataset.hosp)};
@@ -822,10 +823,7 @@ function uDVari(){
   document.getElementById('dVPList').innerHTML=phys.map((r,i)=>(
     '<div class="vari-row vari-row-link" data-phys="'+r.p+'">'
     +'<div class="vari-rank">'+(i<9?'0':'')+(i+1)+'</div>'
-    +'<div class="vari-name" title="'+r.p+'">Dr. '+r.p.split(' ').slice(-1)[0]+'</div>'
-    +'<div class="vari-bar"><div class="vari-bar-fill" style="width:'+r.pct.toFixed(2)+'%"></div></div>'
-    +'<div class="vari-pct">'+r.pct.toFixed(1)+'%</div>'
-    +'<div class="vari-rowstat"><span class="vari-num">'+r.vp+'</span> / '+r.af+'</div>'
+    +'<div class="vari-main"><div class="vari-top"><span class="vari-name" title="'+r.p+'">Dr. '+r.p.split(' ').slice(-1)[0]+'</span><span class="vari-meta"><span class="vari-rowstat"><span class="vari-num">'+r.vp+'</span> / '+r.af+'</span><span class="vari-pct">'+r.pct.toFixed(1)+'%</span></span></div><div class="vari-bar"><div class="vari-bar-fill" style="width:'+r.pct.toFixed(2)+'%"></div></div></div>'
     +'</div>'
   )).join('');
   document.getElementById('dVPList').onclick=function(e){var r=e.target.closest('[data-phys]');if(r&&r.dataset.phys)goPD(r.dataset.phys)};
