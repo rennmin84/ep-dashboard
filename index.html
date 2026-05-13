@@ -646,7 +646,7 @@ function sRVS(s){if(rVSort===s)return;rVSort=s;document.querySelectorAll('#rVSor
 function sDVS(s){if(dVSort===s)return;dVSort=s;document.querySelectorAll('#dVSort .vari-sort-btn').forEach(b=>b.classList.toggle('active',b.dataset.v===s));uDVari()}
 let charts={};
 let rI=false,dI=false,pdI=false;
-const VER='v1.7';
+const VER='v2.0';
 
 function init(){
   const fd=MO[M.last_month-1]+' '+M.last_day+', '+M.last_year;
