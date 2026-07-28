@@ -10,6 +10,7 @@ import base64
 import glob
 import json
 import os
+import re
 import sys
 import argparse
 import subprocess
@@ -25,6 +26,13 @@ except ModuleNotFoundError:
         sys.exit("pandas not installed. Run: python3 -m venv .venv && "
                  ".venv/bin/python3 -m pip install pandas openpyxl")
     os.execv(str(_venv_py), [str(_venv_py), str(Path(__file__).resolve()), *sys.argv[1:]])
+
+# Set to True to bring the Varipulse Adoption Rate sections back on every tab.
+# When False, the <!--VARI:start-->…<!--VARI:end--> blocks in the template are
+# stripped and the keys below are left out of the embedded JSON. Everything
+# upstream still computes normally, so flipping this back needs no other edits.
+SHOW_VARIPULSE_ADOPTION = False
+VARIPULSE_KEYS = ("varipulse_adoption", "varipulse_adoption_region", "varipulse_adoption_phys")
 
 FAVICON_B64 = "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"
 
@@ -429,8 +437,11 @@ def load_png_b64(path):
 
 
 def render_html(agg, template=HTML_TEMPLATE):
-    json_str = json.dumps(agg, separators=(",", ":"), ensure_ascii=False)
     out = template
+    if not SHOW_VARIPULSE_ADOPTION:
+        out = re.sub(r"[ \t]*<!--VARI:start-->.*?<!--VARI:end-->\n", "", out, flags=re.S)
+        agg = {k: v for k, v in agg.items() if k not in VARIPULSE_KEYS}
+    json_str = json.dumps(agg, separators=(",", ":"), ensure_ascii=False)
     out = out.replace("{{FAVICON_B64}}", FAVICON_B64)
     out = out.replace("{{HLOGO_B64}}", HLOGO_B64)
     out = out.replace("{{BW_LOGO_B64}}", BW_LOGO_B64)
