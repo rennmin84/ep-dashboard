@@ -142,6 +142,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 
 /* Biggest Changes (YoY movers) */
 .mv-row{display:grid;grid-template-columns:1fr;gap:12px}
+.mv-head{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.mv-arrow{width:19px;height:19px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;line-height:1;flex-shrink:0}
+.mv-arrow.down{background:var(--red-bg);color:var(--red)}
+.mv-arrow.up{background:var(--green-bg);color:var(--green)}
+.mv-title{font-size:14px;font-weight:800;letter-spacing:-.1px}
+.mv-title.down{color:var(--red)}.mv-title.up{color:var(--green)}
 .mv-list{display:flex;flex-direction:column}
 .mv-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 8px;border-bottom:1px solid var(--border2);transition:background .15s}
 .mv-item:last-child{border-bottom:none}
@@ -552,8 +558,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="rPhS"></div></div></div><div class="phys-list" id="rPhL"></div></div>
         <div class="section-title">Biggest Changes</div>
         <div class="mv-row">
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Losing Ground</div><div class="chart-sub" id="rMvDownS"></div></div></div><div class="mv-list" id="rMvDown"></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Gaining Ground</div><div class="chart-sub" id="rMvUpS"></div></div></div><div class="mv-list" id="rMvUp"></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="mv-head"><span class="mv-arrow down">↓</span><span class="mv-title down">Decreasing</span></div><div class="chart-sub" id="rMvDownS"></div></div></div><div class="mv-list" id="rMvDown"></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="mv-head"><span class="mv-arrow up">↑</span><span class="mv-title up">Increasing</span></div><div class="chart-sub" id="rMvUpS"></div></div></div><div class="mv-list" id="rMvUp"></div></div>
         </div>
       </div>
       <div class="page-footer" id="footerR"></div>
@@ -639,7 +645,7 @@ function sRVS(s){if(rVSort===s)return;rVSort=s;document.querySelectorAll('#rVSor
 function sDVS(s){if(dVSort===s)return;dVSort=s;document.querySelectorAll('#dVSort .vari-sort-btn').forEach(b=>b.classList.toggle('active',b.dataset.v===s));uDVari()}
 let charts={};
 let rI=false,dI=false,pdI=false;
-const VER='v2.1';
+const VER='v2.2';
 
 function init(){
   const fd=MO[M.last_month-1]+' '+M.last_day+', '+M.last_year;
@@ -712,7 +718,7 @@ function initRegion(){
 }
 // Biggest Changes: YTD vs period-matched LY, ranked by absolute case change.
 // Physicians at 0 this year are listed but not clickable (no detail page exists).
-const MV_MIN=8,MV_N=5;
+const MV_MIN=8,MV_N=10;
 function buildMovers(){
   const cur={},ly={};
   D.phys_all_ytd_ranking.forEach(x=>cur[x.physician]=x.count);
@@ -722,7 +728,7 @@ function buildMovers(){
   }).filter(r=>Math.max(r.c,r.l)>=MV_MIN);
   const dn=rows.filter(r=>r.d<0).sort((a,b)=>a.d-b.d).slice(0,MV_N);
   const up=rows.filter(r=>r.d>0).sort((a,b)=>b.d-a.d).slice(0,MV_N);
-  const sub='YTD vs same period '+(M.last_year-1)+' · min '+MV_MIN+' cases';
+  const sub='YTD vs same period '+(M.last_year-1);
   document.getElementById('rMvDownS').textContent=sub;
   document.getElementById('rMvUpS').textContent=sub;
   rnMv('rMvDown',dn,'down');rnMv('rMvUp',up,'up');
