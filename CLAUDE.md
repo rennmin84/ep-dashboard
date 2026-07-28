@@ -1,5 +1,13 @@
 # CLAUDE.md — Token 使用效率指南
 
+## 目前的暫時性設定
+
+- **Varipulse Adoption Rate 已隱藏**（2026-07-28 起，三個分頁都是）。
+  要加回來：把 `build_dashboard.py` 的 `SHOW_VARIPULSE_ADOPTION` 改成 `True`，
+  再跑 `python3 build_dashboard.py --push`。計算邏輯和模板 markup 都還在，不用改別的。
+
+---
+
 ## 開始新任務前的自我檢查
 
 **如果這個任務預計需要大量來回修改（超過 10 輪對話），請先問我：**
