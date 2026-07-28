@@ -445,6 +445,27 @@ def render_html(agg, template=HTML_TEMPLATE):
 # Main
 # ---------------------------------------------------------------------------
 
+def backup_src(today, last_date):
+    """Commit and push src/ to its private repo. Never fatal: the dashboard is
+    already published by this point, so a backup failure is only a warning."""
+    src_dir = Path(__file__).resolve().parent / "src"
+    if not (src_dir / ".git").exists():
+        print(f"      Skipped — src/ is not a git repo.")
+        return
+    git = ["git", "-C", str(src_dir)]
+    try:
+        subprocess.run(git + ["add", "-A"], check=True)
+        if subprocess.run(git + ["diff", "--cached", "--quiet"]).returncode == 0:
+            print(f"      No new exports to back up.")
+            return
+        subprocess.run(git + ["commit", "-m", f"case data {today} (through {last_date})"], check=True)
+        subprocess.run(git + ["push"], check=True)
+        print(f"      ✓ Pushed to private repo.")
+    except subprocess.CalledProcessError as e:
+        print(f"      ⚠ Backup failed ({e}). Dashboard was published; retry with:")
+        print(f"        cd src && git add -A && git commit -m 'case data {today}' && git push")
+
+
 def main():
     import os
     os.system("clear")
@@ -511,7 +532,7 @@ def main():
 
     if args.push:
         print("\n==================================================================")
-        print(f"[5/5] Pushing to GitHub ...")
+        print(f"[5/6] Pushing dashboard to GitHub ...")
         subprocess.run(["git", "add", "index.html", dated_path], check=True)
         staged = subprocess.run(["git", "diff", "--cached", "--quiet"])
         if staged.returncode == 0:
@@ -519,6 +540,11 @@ def main():
         else:
             subprocess.run(["git", "commit", "-m", f"dashboard update {today} (data through {m['last_date']})"], check=True)
             subprocess.run(["git", "push"], check=True)
+
+        print("\n==================================================================")
+        print(f"[6/6] Backing up src/ to private repo ...")
+        backup_src(today, m["last_date"])
+
         print("\n==================================================================")
         print(f"✓ Done!  Live URL → https://rennmin84.github.io/ep-dashboard/")
         print("==================================================================\n\n")
