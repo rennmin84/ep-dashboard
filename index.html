@@ -218,6 +218,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
 .rc-chip{padding:5px 11px;font-size:11px;font-weight:600;color:var(--text2);background:#fff;border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent;user-select:none;white-space:nowrap}
 .rc-chip:hover:not(.active){border-color:var(--text4);color:var(--text)}
 .rc-chip.active{background:rgba(235,23,0,.12);color:var(--bw);border-color:rgba(235,23,0,.4);font-weight:700}
+.rc-more-wrap{display:flex;justify-content:center;margin-top:12px}
+.rc-more{padding:7px 18px;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text2);background:#fff;border:1px solid var(--border);border-radius:16px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.rc-more:hover{border-color:var(--text4);color:var(--text)}
 .vari-note{font-family:var(--sans);font-size:11px;font-style:italic;color:var(--text3);margin:-4px 0 10px;letter-spacing:.1px}
 .vari-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 14px;margin-bottom:0}
 .vari-top{display:flex;gap:8px}
@@ -557,8 +560,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
         <div class="chart-card"><div class="chart-header"><div><div class="chart-sub" id="rPhS"></div></div></div><div class="phys-list" id="rPhL"></div></div>
         <div class="section-title">Biggest Changes</div>
         <div class="mv-row">
-          <div class="chart-card"><div class="chart-header"><div><div class="mv-head"><span class="mv-arrow down">↓</span><span class="mv-title down">Decreasing</span></div><div class="chart-sub" id="rMvDownS"></div></div></div><div class="mv-list" id="rMvDown"></div></div>
           <div class="chart-card"><div class="chart-header"><div><div class="mv-head"><span class="mv-arrow up">↑</span><span class="mv-title up">Increasing</span></div><div class="chart-sub" id="rMvUpS"></div></div></div><div class="mv-list" id="rMvUp"></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="mv-head"><span class="mv-arrow down">↓</span><span class="mv-title down">Decreasing</span></div><div class="chart-sub" id="rMvDownS"></div></div></div><div class="mv-list" id="rMvDown"></div></div>
         </div>
       </div>
       <div class="page-footer" id="footerR"></div>
@@ -585,6 +588,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           <div class="rc-filter"><span class="rc-filter-label">Tech</span><div class="rc-chips" id="dRCTechFilter"><button class="rc-chip active" data-v="all" onclick="filDRCV('all')">All</button><button class="rc-chip" data-v="vp" onclick="filDRCV('vp')">Varipulse only</button></div></div>
         </div>
         <div class="recent-card"><table class="recent-table"><colgroup><col style="width:15%"><col style="width:33%"><col style="width:24%"><col style="width:28%"></colgroup><thead><tr><th>Date</th><th>Physician</th><th>Type</th><th>CAS</th></tr></thead><tbody id="dRCBody"></tbody></table></div>
+        <div class="rc-more-wrap" id="dRCMoreWrap" style="display:none"><button class="rc-more" id="dRCMore" onclick="tDRCMore()"></button></div>
       </div>
       <div class="page-footer" id="footerH"></div>
     </div>
@@ -614,6 +618,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-text
           <div class="rc-filter"><span class="rc-filter-label">Tech</span><div class="rc-chips" id="pdRCTechFilter"><button class="rc-chip active" data-v="all" onclick="filPDRCV('all')">All</button><button class="rc-chip" data-v="vp" onclick="filPDRCV('vp')">Varipulse only</button></div></div>
         </div>
         <div class="recent-card"><table class="recent-table"><colgroup><col style="width:15%"><col style="width:27%"><col style="width:24%"><col style="width:34%"></colgroup><thead><tr><th>Date</th><th>Hospital</th><th>Type</th><th>CAS</th></tr></thead><tbody id="pdRCBody"></tbody></table></div>
+        <div class="rc-more-wrap" id="pdRCMoreWrap" style="display:none"><button class="rc-more" id="pdRCMore" onclick="tPDRCMore()"></button></div>
       </div>
       <div class="page-footer" id="footerP"></div>
     </div>
@@ -637,6 +642,9 @@ const OTHERS_COLOR='#e8e5dc';
 function palWithOthers(pal,n,hasOthers){const out=pal.slice(0,n);if(hasOthers)out[n-1]=OTHERS_COLOR;return out}
 let cH=null,cPD=null,pdHTab='all';
 let dRCType='all',dRCTech='all',pdRCType='all',pdRCTech='all';
+// Recent Cases: 10 rows by default, expandable to 30 (the JSON never holds more).
+const RC_MIN=10,RC_MAX=30;
+let dRCLimit=RC_MIN,pdRCLimit=RC_MIN;
 const TYPE_GROUPS={AF:['AF','Con. AF'],VT:['PVC','VT'],SVT:['WPW','AVNRT']};
 let sRL=true,sDL=true,sPDL=true;
 let rVSort='rate',dVSort='rate';
@@ -815,7 +823,7 @@ function buildHDD(){
   dd.onclick=function(e){e.stopPropagation();var it=e.target.closest('.dropdown-item');if(it&&it.dataset.h){selH(it.dataset.h)}};
 }
 function selH(h){
-  cH=h;document.getElementById('hN').textContent=tc(h);
+  cH=h;dRCLimit=RC_MIN;document.getElementById('hN').textContent=tc(h);
   document.querySelectorAll('#hDD .dropdown-item').forEach(e=>e.classList.toggle('active',e.dataset.h===h));
   document.getElementById('hDD').classList.remove('open');
   updateDetail();
@@ -894,9 +902,19 @@ function filPDRCT(v){pdRCType=v;setRCChip('pdRCTypeFilter',v);uPDRecent()}
 function filPDRCV(v){pdRCTech=v;setRCChip('pdRCTechFilter',v);uPDRecent()}
 function uDRecent(){
   const all=(D.recent_cases_by_hospital&&D.recent_cases_by_hospital[cH])||[];
-  const rows=all.filter(r=>rcMatch(r,dRCType,dRCTech)).slice(0,30);
+  const m=all.filter(r=>rcMatch(r,dRCType,dRCTech));
+  const rows=m.slice(0,dRCLimit);
   document.getElementById('dRCBody').innerHTML=renderRecent(rows,4,r=>'<td title="'+r.physician_dr+'">'+r.physician_dr+'</td><td title="'+r.type+'">'+r.type+'</td><td title="'+r.cas+'">'+r.cas+'</td>');
+  rcMore('dRCMoreWrap','dRCMore',m.length,dRCLimit);
 }
+function rcMore(wrapId,btnId,total,limit){
+  const w=document.getElementById(wrapId);
+  if(total<=RC_MIN){w.style.display='none';return}
+  w.style.display='flex';
+  document.getElementById(btnId).textContent=limit===RC_MIN?'Show '+Math.min(total,RC_MAX):'Show '+RC_MIN;
+}
+function tDRCMore(){dRCLimit=dRCLimit===RC_MIN?RC_MAX:RC_MIN;uDRecent()}
+function tPDRCMore(){pdRCLimit=pdRCLimit===RC_MIN?RC_MAX:RC_MIN;uPDRecent()}
 function uDLine(){
   const cy=M.last_year,ly=cy-1,md=D.hospital_monthly.filter(x=>x.hospital===cH);
   const cyD=Array(12).fill(0),lyD=Array(12).fill(0);
@@ -972,7 +990,7 @@ function buildPDDD(){
   document.getElementById('pdSearch').addEventListener('click',e=>e.stopPropagation());
 }
 function selPD(p){
-  cPD=p;pdHTab='all';document.getElementById('pdN').textContent=p;
+  cPD=p;pdHTab='all';pdRCLimit=RC_MIN;document.getElementById('pdN').textContent=p;
   const ph=D.phys_hospitals.filter(x=>x.physician===p).map(x=>hAbbr(x.hospital));
   const hList=document.getElementById('pdHList');
   hList.innerHTML=ph.length?'<svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg>'+ph.join(' + '):'';
@@ -1013,8 +1031,10 @@ function updatePhysDet(){
 function uPDRecent(){
   const phys=(D.recent_cases_by_physician||{})[cPD]||{};
   const all=(pdHTab==='all'?phys.__all__:phys[pdHTab])||[];
-  const rows=all.filter(r=>rcMatch(r,pdRCType,pdRCTech)).slice(0,30);
+  const m=all.filter(r=>rcMatch(r,pdRCType,pdRCTech));
+  const rows=m.slice(0,pdRCLimit);
   document.getElementById('pdRCBody').innerHTML=renderRecent(rows,4,r=>{const ha=hAbbr(r.hospital);return '<td title="'+r.hospital+'">'+ha+'</td><td title="'+r.type+'">'+r.type+'</td><td title="'+r.cas+'">'+r.cas+'</td>'});
+  rcMore('pdRCMoreWrap','pdRCMore',m.length,pdRCLimit);
 }
 function uPDHComp(){
   const p=cPD,cy=M.last_year;
